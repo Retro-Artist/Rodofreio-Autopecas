@@ -1,0 +1,28 @@
+2025-04-03 20:15:44 - Database Connection Error:
+Error Code: 2002
+Error Message: SQLSTATE[HY000] [2002] No such file or directory
+Host: localhost
+Database: rodofreios
+User: root
+
+2025-04-03 20:15:44 - Database Connection Error:
+Error Code: 2002
+Error Message: SQLSTATE[HY000] [2002] No such file or directory
+Host: localhost
+Database: rodofreios
+User: root
+
+2025-04-03 20:16:33 - Database Connection Error:
+Error Code: 2002
+Error Message: SQLSTATE[HY000] [2002] Operation timed out
+Host: db.whm07.bs2.com.br
+Database: rodofreios
+User: rodofreios
+
+2025-04-03 20:16:41 - Database Connection Error:
+Error Code: 2002
+Error Message: SQLSTATE[HY000] [2002] Operation now in progress
+Host: db.whm07.bs2.com.br
+Database: rodofreios
+User: rodofreios
+

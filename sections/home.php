@@ -394,144 +394,188 @@ try {
                 </div>
             </section>
 
-            <!----------------------Nossas Unidades Section usando o componente da página de sobre---------------------->
-            <section class="units-section">
-                <div class="section-header">
-                    <h2 class="section-header__title">Nossas Unidades</h2>
-                    <p class="section-header__description">Atendimento presencial em nossas lojas espalhadas pelo Brasil</p>
+<!-- Seção para o Mapa do Brasil com as Unidades -->
+<section class="locations-section">
+    <div class="section-header">
+        <h2 class="section-header__title">Nossas Unidades</h2>
+        <p class="section-header__description">Atendimento presencial em nossas lojas espalhadas pelo Brasil</p>
+    </div>
+    
+    <div class="locations-container">
+        <div class="map-container">
+            <div id="storesMap" style="width: 100%; height: 500px;"></div>
+        </div>
+        
+        <div class="stores-list">
+            <div class="store-selector">
+                <select id="storeSelector" class="store-selector__select">
+                    <option value="">Selecione uma loja para ver detalhes</option>
+                </select>
+            </div>
+            
+            <div id="storeDetails" class="store-details">
+                <!-- Detalhes da loja selecionada serão exibidos aqui -->
+                <div class="store-details__placeholder">
+                    <p>Selecione uma loja no mapa ou na lista acima para ver os detalhes</p>
                 </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-                <div class="units-tabs">
-                    <div class="units-tabs__header">
-                        <button class="units-tabs__button units-tabs__button--active" data-target="maringa">Maringá - PR</button>
-                        <button class="units-tabs__button" data-target="londrina">Londrina - PR</button>
-                        <button class="units-tabs__button" data-target="cuiaba">Cuiabá - MT</button>
-                        <button class="units-tabs__button" data-target="salvador">Salvador - BA</button>
-                    </div>
+<!-- CSS adicional para o mapa -->
+<style>
+    .locations-container {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+    
+    .map-container {
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        box-shadow: var(--box-shadow);
+    }
+    
+    .stores-list {
+        background-color: var(--white);
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        padding: 20px;
+    }
+    
+    .store-selector {
+        margin-bottom: 20px;
+    }
+    
+    .store-selector__select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        background-color: var(--white);
+        font-family: var(--font-secondary);
+        font-size: var(--font-base);
+    }
+    
+    .store-details {
+        padding: 15px 0;
+    }
+    
+    .store-card {
+        display: none;
+    }
+    
+    .store-card.active {
+        display: block;
+    }
+    
+    .store-card__title {
+        font-size: var(--font-lg);
+        color: var(--primary-color);
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .store-card__item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 12px;
+    }
+    
+    .store-card__item i {
+        color: var(--primary-color);
+        margin-right: 10px;
+        margin-top: 3px;
+    }
+    
+    .store-card__text {
+        font-size: var(--font-base);
+        color: var(--text-color);
+        line-height: 1.5;
+    }
+    
+    .store-card__link {
+        display: inline-flex;
+        align-items: center;
+        background-color: var(--primary-color);
+        color: var(--white);
+        padding: 8px 15px;
+        border-radius: var(--border-radius);
+        text-decoration: none;
+        margin-top: 15px;
+        transition: var(--transition);
+    }
+    
+    .store-card__link:hover {
+        background-color: var(--primary-hover);
+        transform: translateY(-2px);
+        color: var(--white);
+    }
+    
+    .store-card__link i {
+        margin-right: 8px;
+    }
+    
+    /* Estilo para o popup do Leaflet */
+    .custom-popup {
+        margin-bottom: 10px;
+    }
+    
+    .custom-popup h3 {
+        font-size: 16px;
+        margin-bottom: 5px;
+        color: var(--primary-color);
+    }
+    
+    .custom-popup p {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+    
+    .custom-popup-button {
+        display: inline-block;
+        background-color: var(--primary-color);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 500;
+    }
+    
+    /* Responsivo */
+    @media (min-width: 992px) {
+        .locations-container {
+            flex-direction: row;
+        }
+        
+        .map-container {
+            flex: 1.5;
+        }
+        
+        .stores-list {
+            flex: 1;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        #storesMap {
+            height: 400px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        #storesMap {
+            height: 300px;
+        }
+    }
+</style>
 
-                    <div class="units-tabs__content">
-                        <div class="units-tabs__pane units-tabs__pane--active" id="maringa">
-                            <div class="unit-map">
-                                <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3660.4481262589344!2d-51.93804!3d-23.425478!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDI1JzMxLjciUyA1McKwNTYnMTYuOSJX!5e0!3m2!1spt-BR!2sbr!4v1616682157654!5m2!1spt-BR!2sbr"
-                                    width="100%"
-                                    height="300"
-                                    style="border:0;"
-                                    allowfullscreen=""
-                                    loading="lazy">
-                                </iframe>
-                            </div>
-                            <div class="unit-info">
-                                <h3 class="unit-info__title">Matriz Maringá</h3>
-                                <div class="unit-info__details">
-                                    <div class="unit-info__item">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <span>Av. Colombo, 1500 - Centro, Maringá - PR</span>
-                                    </div>
-                                    <div class="unit-info__item">
-                                        <i class="fas fa-phone-alt"></i>
-                                        <span>(44) 3333-4444</span>
-                                    </div>
-                                    <div class="unit-info__item">
-                                        <i class="fas fa-clock"></i>
-                                        <span>Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="units-tabs__pane" id="londrina">
-                            <div class="unit-map">
-                                <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3660.4481262589344!2d-51.93804!3d-23.425478!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDI1JzMxLjciUyA1McKwNTYnMTYuOSJX!5e0!3m2!1spt-BR!2sbr!4v1616682157654!5m2!1spt-BR!2sbr"
-                                    width="100%"
-                                    height="300"
-                                    style="border:0;"
-                                    allowfullscreen=""
-                                    loading="lazy">
-                                </iframe>
-                            </div>
-                            <div class="unit-info">
-                                <h3 class="unit-info__title">Filial Londrina</h3>
-                                <div class="unit-info__details">
-                                    <div class="unit-info__item">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <span>Av. Tiradentes, 1000 - Zona Sul, Londrina - PR</span>
-                                    </div>
-                                    <div class="unit-info__item">
-                                        <i class="fas fa-phone-alt"></i>
-                                        <span>(43) 3333-4444</span>
-                                    </div>
-                                    <div class="unit-info__item">
-                                        <i class="fas fa-clock"></i>
-                                        <span>Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="units-tabs__pane" id="cuiaba">
-                            <div class="unit-map">
-                                <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3660.4481262589344!2d-51.93804!3d-23.425478!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDI1JzMxLjciUyA1McKwNTYnMTYuOSJX!5e0!3m2!1spt-BR!2sbr!4v1616682157654!5m2!1spt-BR!2sbr"
-                                    width="100%"
-                                    height="300"
-                                    style="border:0;"
-                                    allowfullscreen=""
-                                    loading="lazy">
-                                </iframe>
-                            </div>
-                            <div class="unit-info">
-                                <h3 class="unit-info__title">Filial Cuiabá</h3>
-                                <div class="unit-info__details">
-                                    <div class="unit-info__item">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <span>Av. Fernando Corrêa, 3000 - Coxipó, Cuiabá - MT</span>
-                                    </div>
-                                    <div class="unit-info__item">
-                                        <i class="fas fa-phone-alt"></i>
-                                        <span>(65) 3333-4444</span>
-                                    </div>
-                                    <div class="unit-info__item">
-                                        <i class="fas fa-clock"></i>
-                                        <span>Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="units-tabs__pane" id="salvador">
-                            <div class="unit-map">
-                                <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3660.4481262589344!2d-51.93804!3d-23.425478!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDI1JzMxLjciUyA1McKwNTYnMTYuOSJX!5e0!3m2!1spt-BR!2sbr!4v1616682157654!5m2!1spt-BR!2sbr"
-                                    width="100%"
-                                    height="300"
-                                    style="border:0;"
-                                    allowfullscreen=""
-                                    loading="lazy">
-                                </iframe>
-                            </div>
-                            <div class="unit-info">
-                                <h3 class="unit-info__title">Filial Salvador</h3>
-                                <div class="unit-info__details">
-                                    <div class="unit-info__item">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <span>Av. Tancredo Neves, 2500 - Caminho das Árvores, Salvador - BA</span>
-                                    </div>
-                                    <div class="unit-info__item">
-                                        <i class="fas fa-phone-alt"></i>
-                                        <span>(71) 3333-4444</span>
-                                    </div>
-                                    <div class="unit-info__item">
-                                        <i class="fas fa-clock"></i>
-                                        <span>Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
         </div>
     </div>
 </main>
@@ -571,4 +615,225 @@ try {
             document.getElementById(target).classList.add('units-tabs__pane--active');
         });
     });
+
+    document.addEventListener('DOMContentLoaded', function() {
+    // Dados das lojas
+    const stores = [
+        {
+            id: 'loja01',
+            name: 'LOJA 01 - Matriz Maringá',
+            address: 'R ESTADOS UNIDOS 1423 JARDIM INTERNORTE, Maringá - PR',
+            phone: '(44) 3027-7373',
+            hours: 'Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00',
+            coords: [-23.398663, -51.919023],
+            mapsLink: 'https://maps.app.goo.gl/Zf6241xvQiqg1xN77'
+        },
+        {
+            id: 'loja02',
+            name: 'LOJA 02 - Maringá',
+            address: 'RODOVIA BR-376 10082 N 130 JD KOSMOS, Maringá - PR',
+            phone: '(44) 3027-7373',
+            hours: 'Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00',
+            coords: [-23.395072, -51.974118],
+            mapsLink: 'https://maps.app.goo.gl/C3MJjLDLxrp57Xv9A'
+        },
+        {
+            id: 'loja03',
+            name: 'LOJA 03 - Cambé',
+            address: 'RUA JOSÉ CARLOS MUFATTO N 2024 - JARDIM ANA ELIZA II, Cambé - PR',
+            phone: '(43) 3174-0600',
+            hours: 'Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00',
+            coords: [-23.304381, -51.290531],
+            mapsLink: 'https://maps.app.goo.gl/9YF8zQ1D4nAHqJCcA'
+        },
+        {
+            id: 'loja04',
+            name: 'LOJA 04 - Luís Eduardo Magalhães',
+            address: 'AV LESTE N 67 CIDADE DO AUTOMOVEL, Luís Eduardo Magalhães - BA',
+            phone: '(77) 3628-9889',
+            hours: 'Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00',
+            coords: [-12.088805, -45.812589],
+            mapsLink: 'https://maps.app.goo.gl/X9XZREkbjANwtQQj9'
+        },
+        {
+            id: 'loja08',
+            name: 'LOJA 08 - Luís Eduardo Magalhães',
+            address: 'RUA PALMAS LOTE 14 QD 99 N 721 BAIRRO BOA VISTA, Luís Eduardo Magalhães - BA',
+            phone: '(77) 3628-9880',
+            hours: 'Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00',
+            coords: [-12.131923, -45.789805],
+            mapsLink: 'https://maps.app.goo.gl/PTCZriUL7yX6yqQW7'
+        },
+        {
+            id: 'loja11',
+            name: 'LOJA 11 - Barreiras',
+            address: 'AV. PASTOR ANTONIO ULISSES NASCIMENTO 1817 - CIDADE NOVA, Barreiras - BA',
+            phone: '(77) 3612-2100',
+            hours: 'Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00',
+            coords: [-12.868580, -44.977614],
+            mapsLink: 'https://maps.app.goo.gl/4ZXGvUEVUvqwZLBW7'
+        },
+        {
+            id: 'loja09',
+            name: 'LOJA 09 - Dourados',
+            address: 'RUA JOSÉ BONILHA DA CRUZ 7260 - PARQUE DAS NAÇÕES, Dourados - MS',
+            phone: '(67) 3033-5050',
+            hours: 'Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00',
+            coords: [-22.232539, -54.809972],
+            mapsLink: 'https://maps.app.goo.gl/Rh9i5xUqUNjEggH36'
+        },
+        {
+            id: 'loja06',
+            name: 'LOJA 06 - Rondonópolis',
+            address: 'AV PERIMETRAL 1469 - TREVÃO, Rondonópolis - MT',
+            phone: '(66) 3022-4999',
+            hours: 'Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00',
+            coords: [-16.659271, -54.641480],
+            mapsLink: 'https://maps.app.goo.gl/dav3ht4M5jUrLJot9'
+        },
+        {
+            id: 'loja07',
+            name: 'LOJA 07 - Confresa',
+            address: 'AV BRASIL QUADRA 1 LOTE 13 AEROPORTO, Confresa - MT',
+            phone: '(66) 3564-1515',
+            hours: 'Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00',
+            coords: [-10.645532, -51.569764],
+            mapsLink: 'https://maps.app.goo.gl/ZaRPczYa89FBWztn9'
+        },
+        {
+            id: 'loja12',
+            name: 'LOJA 12 - Sinop',
+            address: 'RUA COLONIZADOR ÊNIO PIPINO 1293 - SETOR INDUSTRIAL SUL, Sinop - MT',
+            phone: '(66) 3515-5757',
+            hours: 'Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00',
+            coords: [-11.855329, -55.507023],
+            mapsLink: 'https://maps.app.goo.gl/eDs9zsz38TFGqUmv7'
+        }
+    ];
+    
+    // Inicializar o mapa
+    const map = L.map('storesMap').setView([-15.77972, -47.92972], 4); // Centralizado no Brasil
+    
+    // Adicionar layer de mapa base
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    
+    // Ícone personalizado para os marcadores
+    const storeIcon = L.icon({
+        iconUrl: `${BASE_URL}/assets/img/map-marker.png`,
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
+    });
+    
+    // Adicionar marcadores para cada loja
+    const markers = {};
+    stores.forEach(store => {
+        // Criar marcador
+        const marker = L.marker(store.coords, {icon: storeIcon})
+            .addTo(map);
+        
+        // Criar conteúdo do popup
+        const popupContent = `
+            <div class="custom-popup">
+                <h3>${store.name}</h3>
+                <p>${store.address}</p>
+                <a href="#" class="custom-popup-button store-details-btn" data-store="${store.id}">Ver detalhes</a>
+            </div>
+        `;
+        
+        // Adicionar popup ao marcador
+        marker.bindPopup(popupContent);
+        
+        // Armazenar marcador para referência futura
+        markers[store.id] = marker;
+        
+        // Adicionar opção ao seletor de lojas
+        const option = document.createElement('option');
+        option.value = store.id;
+        option.textContent = store.name;
+        document.getElementById('storeSelector').appendChild(option);
+    });
+    
+    // Gerar cards de detalhes das lojas
+    const storeDetailsContainer = document.getElementById('storeDetails');
+    stores.forEach(store => {
+        const storeCard = document.createElement('div');
+        storeCard.id = `store-card-${store.id}`;
+        storeCard.className = 'store-card';
+        storeCard.innerHTML = `
+            <h3 class="store-card__title">${store.name}</h3>
+            <div class="store-card__item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span class="store-card__text">${store.address}</span>
+            </div>
+            <div class="store-card__item">
+                <i class="fas fa-phone-alt"></i>
+                <span class="store-card__text">${store.phone}</span>
+            </div>
+            <div class="store-card__item">
+                <i class="fas fa-clock"></i>
+                <span class="store-card__text">${store.hours}</span>
+            </div>
+            <a href="${store.mapsLink}" class="store-card__link" target="_blank">
+                <i class="fas fa-directions"></i> Como chegar
+            </a>
+        `;
+        storeDetailsContainer.appendChild(storeCard);
+    });
+    
+    // Evento para mostrar detalhes da loja quando selecionada no dropdown
+    document.getElementById('storeSelector').addEventListener('change', function(e) {
+        const storeId = e.target.value;
+        
+        // Esconder todos os cards
+        document.querySelectorAll('.store-card').forEach(card => {
+            card.classList.remove('active');
+        });
+        
+        // Mostrar placeholder se nenhuma loja foi selecionada
+        if (!storeId) {
+            document.querySelector('.store-details__placeholder').style.display = 'block';
+            return;
+        }
+        
+        // Esconder placeholder
+        document.querySelector('.store-details__placeholder').style.display = 'none';
+        
+        // Mostrar card selecionado
+        document.getElementById(`store-card-${storeId}`).classList.add('active');
+        
+        // Abrir popup no mapa
+        markers[storeId].openPopup();
+        
+        // Centralizar mapa no marcador
+        map.setView(markers[storeId].getLatLng(), 13);
+    });
+    
+    // Evento para os botões "Ver detalhes" nos popups
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('store-details-btn')) {
+            e.preventDefault();
+            const storeId = e.target.dataset.store;
+            
+            // Selecionar a loja no dropdown
+            document.getElementById('storeSelector').value = storeId;
+            
+            // Disparar o evento change para mostrar os detalhes
+            const event = new Event('change');
+            document.getElementById('storeSelector').dispatchEvent(event);
+            
+            // Scroll para a seção de detalhes
+            document.getElementById('storeDetails').scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+    
+    // Ajustar o mapa para mostrar todos os marcadores
+    const bounds = [];
+    stores.forEach(store => {
+        bounds.push(store.coords);
+    });
+    map.fitBounds(bounds);
+});
 </script>
