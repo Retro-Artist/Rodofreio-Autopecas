@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Toggle da classe 'active' no menu
             mobileMenu.classList.toggle('active');
             this.classList.toggle('active');
+            
+            console.log('Menu mobile toggled');
         });
     }
     
@@ -28,17 +30,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 const parentLi = this.parentNode;
                 parentLi.classList.toggle('active');
+                console.log('Dropdown toggled');
             }
         });
     });
     
-    // Fechar o menu quando clicar fora dele
+    // Fechar o menu quando clicar fora dele, mas não fechar quando clicar na área de busca
     document.addEventListener('click', function(event) {
-        if (!event.target.closest('.main-nav') && 
+        // Verificar se o clique foi fora do menu e do botão de menu
+        if (!event.target.closest('.main-nav__menu') && 
             !event.target.closest('.mobile-menu-toggle') && 
+            !event.target.closest('.mobile-search-wrapper') && 
             mobileMenu.classList.contains('active')) {
             mobileMenu.classList.remove('active');
             menuButton.classList.remove('active');
+            console.log('Menu closed by outside click');
         }
     });
 });

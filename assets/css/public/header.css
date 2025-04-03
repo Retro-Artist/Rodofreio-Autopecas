@@ -205,11 +205,9 @@
   color: var(--white);
 }
 
-/* Mobile-only search */
-.main-nav__item--mobile-search {
+/* Mobile search wrapper - completely hidden on desktop */
+.mobile-search-wrapper {
   display: none;
-  padding: 15px;
-  background-color: rgba(0, 0, 0, 0.1);
   width: 100%;
 }
 
@@ -222,9 +220,9 @@
   width: 100%;
   padding: 10px 45px 10px 15px;
   border: none;
-  border-radius: 30px;
+  border-radius: 4px;
   font-size: var(--font-sm);
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: #fff;
 }
 
 .mobile-search-form__input::placeholder {
@@ -241,6 +239,11 @@
   color: #666;
   font-size: var(--font-base);
   cursor: pointer;
+}
+
+/* Mobile search item in menu - now hidden */
+.main-nav__item--mobile-search {
+  display: none !important;
 }
 
 /* Dropdown styles */
@@ -318,15 +321,40 @@
     z-index: 1001;
   }
 
+  /* Hide the desktop search */
+  .site-header__search {
+    display: none;
+  }
+
+  /* MOBILE SEARCH - only displayed on mobile */
+  .mobile-search-wrapper {
+    display: block;
+    padding: 10px 15px;
+    background-color: var(--secondary-color);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .mobile-search-form__input {
+    background-color: #fff;
+    padding: 10px 40px 10px 15px;
+    border-radius: 4px;
+  }
+
+  .mobile-search-form__button {
+    color: #444;
+    font-size: 16px;
+  }
+
   /* Estilos para o menu principal no mobile */
   .main-nav__menu {
     display: none;
     position: absolute;
     left: 0;
+    top: 100%; /* Position below the search bar */
     width: 100%;
     background-color: var(--secondary-color);
     flex-direction: column;
-    z-index: 1000;
+    z-index: 999;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   }
 
@@ -338,56 +366,24 @@
   /* Garantir que os itens do menu ocupem toda a largura */
   .main-nav__item {
     width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  .site-header__search {
-    display: none; /* Hide desktop search on mobile */
+  .main-nav__item:last-child {
+    border-bottom: none;
   }
 
   /* Main navigation styling for mobile */
   .main-nav {
     display: block; /* Ensure the red bar is always visible */
-    min-height: 50px; /* Ensure red bar is visible even when menu is hidden */
     position: relative; /* Needed for absolute positioning of menu */
   }
 
   .main-nav .container {
-    justify-content: flex-start; /* Left align on mobile */
-    position: static; /* Needed for absolute positioning of menu */
+    flex-direction: column; /* Stack children vertically */
+    align-items: stretch;
+    padding: 0; /* Remove container padding for full-width search */
   }
-
-  .main-nav__item--mobile-search {
-    display: block;
-    order: -1; /* Garantir que apareça primeiro, independente da ordem no HTML */
-    padding: 15px;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    margin-bottom: 5px;
-}
-
-/* Melhorar a aparência da barra de busca */
-.mobile-search-form__input {
-    width: 100%;
-    padding: 12px 45px 12px 15px;
-    border: none;
-    border-radius: 4px;
-    font-size: var(--font-sm);
-    background-color: rgba(255, 255, 255, 0.95);
-}
-
-/* Posicionar o botão de busca */
-.mobile-search-form__button {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: #666;
-    font-size: var(--font-md);
-    cursor: pointer;
-}
 
   .dropdown-menu {
     position: static;

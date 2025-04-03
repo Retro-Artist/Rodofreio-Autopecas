@@ -73,18 +73,18 @@
         <!-- Navegação Menu com Barra Vermelha -->
         <nav class="main-nav">
             <div class="container">
+                <!-- Mobile Search (always visible on mobile) -->
+                <div class="mobile-search-wrapper">
+                    <form action="<?= BASE_URL ?>/produtos" method="GET" class="mobile-search-form">
+                        <input type="text" name="search" placeholder="O que você procura?" class="mobile-search-form__input" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
+                        <button type="submit" class="mobile-search-form__button" aria-label="Buscar">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+                
                 <ul class="main-nav__menu">
-                    <!-- Item de busca mobile (agora primeiro na ordem) -->
-                    <li class="main-nav__item main-nav__item--mobile-search">
-                        <form action="<?= BASE_URL ?>/produtos" method="GET" class="mobile-search-form">
-                            <input type="text" name="search" placeholder="O que você procura?" class="mobile-search-form__input" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
-                            <button type="submit" class="mobile-search-form__button" aria-label="Buscar">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </form>
-                    </li>
-
-                    <!-- Outros itens do menu depois da busca -->
+                    <!-- Regular menu items (hidden on mobile until menu button is clicked) -->
                     <li class="main-nav__item">
                         <a href="<?= BASE_URL ?>/" class="main-nav__link">Home</a>
                     </li>
