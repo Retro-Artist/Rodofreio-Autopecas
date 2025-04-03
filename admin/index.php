@@ -38,7 +38,7 @@ if (!in_array($page, $validPages)) {
 }
 
 // Include the header
-include __DIR__ . '/pages/header.php';
+include __DIR__ . '/pages/admin_header.php';
 
 // Verificar se o arquivo existe antes de incluí-lo
 $page_file = __DIR__ . '/pages/' . $page . '.php';
@@ -50,4 +50,4 @@ if (file_exists($page_file)) {
 }
 
 // Include the footer
-include __DIR__ . '/pages/footer.php';
+include __DIR__ . '/pages/admin_footer.php';

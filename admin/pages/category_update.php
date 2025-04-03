@@ -95,7 +95,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'name' => $name,
                     'slug' => $slug,
                     'description' => $description,
-                    'parent_id' => $parent_id
+                    'parent_id' => $parent_id,
+                    'created_at' => $category['created_at'] // Mantém a data original
                 ];
             }
         } catch (PDOException $e) {
@@ -159,7 +160,11 @@ try {
             <div class="summary-item">
                 <span class="summary-label">Criada em:</span>
                 <span class="summary-value">
-                    <?= (new DateTime($category['created_at']))->format('d/m/Y H:i') ?>
+                    <?php if (!empty($category['created_at'])): ?>
+                        <?= (new DateTime($category['created_at']))->format('d/m/Y H:i') ?>
+                    <?php else: ?>
+                        Data não disponível
+                    <?php endif; ?>
                 </span>
             </div>
         </div>
@@ -204,72 +209,3 @@ try {
         </form>
     </div>
 </div>
-
-<style>
-    .category-summary {
-        background-color: #f8f9fa;
-        border-radius: 6px;
-        padding: 15px;
-        margin-bottom: 25px;
-        border: 1px solid #eee;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 15px;
-    }
-    
-    .summary-item {
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .summary-label {
-        font-size: 12px;
-        color: #666;
-        margin-bottom: 5px;
-    }
-    
-    .summary-value {
-        font-weight: 500;
-        color: #333;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-    
-    .slug-value {
-        font-family: monospace;
-        background-color: #eee;
-        padding: 2px 6px;
-        border-radius: 3px;
-        font-size: 13px;
-    }
-    
-    .count-badge {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 24px;
-        height: 24px;
-        background-color: #f0f0f0;
-        color: #555;
-        font-weight: 500;
-        font-size: 12px;
-        border-radius: 12px;
-        padding: 0 8px;
-    }
-    
-    .view-link {
-        font-size: 12px;
-        color: var(--primary-color);
-        text-decoration: none;
-    }
-    
-    .view-link:hover {
-        text-decoration: underline;
-    }
-    
-    .view-link i {
-        font-size: 10px;
-        margin-right: 3px;
-    }
-</style>

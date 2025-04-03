@@ -1,0 +1,49 @@
+RewriteEngine On
+
+# Explicitly allow direct access to static assets
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule \.(css|js|png|jpg|jpeg|gif|webp|svg|ico)$ - [L]
+
+# Don't apply to files or directories that exist
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Mapeamentos específicos para páginas estáticas
+RewriteRule ^sobre/?$ index.php?page=about [L,QSA]
+RewriteRule ^contato/?$ index.php?page=contact [L,QSA]
+RewriteRule ^trabalhe-conosco/?$ index.php?page=work [L,QSA]
+RewriteRule ^fale-conosco/?$ index.php?page=contact [L,QSA]
+
+# Handle product URLs (singular)
+RewriteRule ^produto/([^/]+)/?$ index.php?page=single&slug=$1 [L,QSA]
+
+# Handle category archive
+RewriteRule ^produtos/categoria/([^/]+)/?$ index.php?page=archive&category=$1 [L,QSA]
+
+# Handle search in archive
+RewriteRule ^produtos/busca/([^/]+)/?$ index.php?page=archive&search=$1 [L,QSA]
+
+# Handle all products (archive)
+RewriteRule ^produtos/?$ index.php?page=archive [L,QSA]
+
+# Handle admin URLs - don't rewrite these
+RewriteCond %{REQUEST_URI} ^/admin
+RewriteRule ^(.*)$ - [L]
+
+# Handle all other simple pages - less specific rule at the end
+RewriteCond %{REQUEST_URI} !^/index\.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]+)/?$ index.php?page=$1 [L,QSA]
+
+# Handle homepage
+RewriteRule ^$ index.php [L,QSA]
+
+# Proper MIME types
+AddType text/css .css
+AddType application/javascript .js
+AddType image/png .png
+AddType image/jpeg .jpg .jpeg
+AddType image/gif .gif
+AddType image/webp .webp
+AddType image/svg+xml .svg

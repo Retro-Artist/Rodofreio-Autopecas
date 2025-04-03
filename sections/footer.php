@@ -49,12 +49,29 @@
                 <div class="footer-column">
                     <h3 class="footer-title">Categorias</h3>
                     <ul class="footer-links">
-                        <li><a href="<?= BASE_URL ?>/produtos/categoria/freios">Sistema de Freios</a></li>
-                        <li><a href="<?= BASE_URL ?>/produtos/categoria/suspensao">Suspensão</a></li>
-                        <li><a href="<?= BASE_URL ?>/produtos/categoria/motor">Motor</a></li>
-                        <li><a href="<?= BASE_URL ?>/produtos/categoria/transmissao">Transmissão</a></li>
-                        <li><a href="<?= BASE_URL ?>/produtos/categoria/filtros">Filtros</a></li>
-                        <li><a href="<?= BASE_URL ?>/produtos/categoria/acessorios">Acessórios</a></li>
+                        <?php
+                        // Buscar categorias do banco de dados
+                        try {
+                            $footer_categories_query = "SELECT name, slug FROM categories ORDER BY name LIMIT 16";
+                            $footer_categories_stmt = $pdo->prepare($footer_categories_query);
+                            $footer_categories_stmt->execute();
+                            $footer_categories = $footer_categories_stmt->fetchAll();
+
+                            // Exibir cada categoria no menu
+                            if (!empty($footer_categories)) {
+                                foreach ($footer_categories as $category) {
+                                    echo '<li><a href="' . BASE_URL . '/produtos/categoria/' . urlencode($category['slug']) . '">' . htmlspecialchars($category['name']) . '</a></li>';
+                                }
+                            } else {
+                                // Fallback se não houver categorias
+                                echo '<li><a href="' . BASE_URL . '/produtos">Todos os Produtos</a></li>';
+                            }
+                        } catch (PDOException $e) {
+                            // Em caso de erro, mostrar pelo menos um link padrão
+                            error_log("Erro ao buscar categorias para footer: " . $e->getMessage());
+                            echo '<li><a href="' . BASE_URL . '/produtos">Todos os Produtos</a></li>';
+                        }
+                        ?>
                     </ul>
                 </div>
                 <div class="footer-column">
@@ -98,7 +115,7 @@
     </div>
 </footer>
 <div class="whatsapp-floating">
-    <a href="https://wa.me/77998168668" target="_blank">
+    <a href="https://wa.me/<?= WHATSAPP_NUMBER ?>" target="_blank">
         <div class="whatsapp-tooltip">Fale conosco pelo WhatsApp</div>
         <i class="fab fa-whatsapp"></i>
     </a>
