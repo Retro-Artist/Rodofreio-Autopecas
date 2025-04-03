@@ -24,9 +24,21 @@ document.addEventListener('DOMContentLoaded', function() {
         link.addEventListener('click', function(e) {
             if (window.innerWidth <= 768) {
                 e.preventDefault();
+                e.stopPropagation();
+                
                 const parentLi = this.parentNode;
                 parentLi.classList.toggle('active');
             }
         });
+    });
+    
+    // Fechar o menu quando clicar fora dele
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.main-nav') && 
+            !event.target.closest('.mobile-menu-toggle') && 
+            mobileMenu.classList.contains('active')) {
+            mobileMenu.classList.remove('active');
+            menuButton.classList.remove('active');
+        }
     });
 });
