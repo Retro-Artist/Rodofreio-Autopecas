@@ -1,0 +1,230 @@
+/* assets/css/public/listing.css */
+/* Centralized styling for product cards used in archive and home pages */
+
+/* Products Grid Layout */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  margin-bottom: 50px;
+  max-width: 1200px;
+  margin: 0 auto 50px;
+  padding: 0 20px;
+}
+
+/* Product Card Basic Styling */
+.product-card {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Make the entire card clickable via a full card link */
+.product-card-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  cursor: pointer;
+}
+
+/* Product Badge */
+.product-badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background-color: var(--secondary-color);
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 4px;
+  z-index: 5;
+}
+
+/* Product Image Container */
+.product-image {
+  padding: 20px;
+  height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+}
+
+.product-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image img {
+  transform: scale(1.08);
+}
+
+/* Product Info */
+.product-info {
+  padding: 15px 20px;
+  flex-grow: 1;
+}
+
+.product-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #333;
+  line-height: 1.4;
+  height: 44px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+
+/* WhatsApp Contact Info */
+.product-contact {
+  display: flex;
+  align-items: center;
+  margin: 15px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.product-contact i {
+  color: #25D366;
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+/* Product Action Buttons - Updated for vertical layout */
+.product-action-buttons {
+  padding: 0 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  z-index: 2; /* Ensure buttons are above the card link */
+}
+
+/* Secondary Button - View Details (now at the top) */
+.product-btn-secondary {
+  width: 100%;
+  padding: 12px 10px;
+  background-color: transparent;
+  color: #13123e;
+  border: 1px solid #13123e;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  position: relative;
+}
+
+.product-btn-secondary:hover {
+  background-color: rgba(19, 18, 62, 0.05);
+  color: #13123e;
+}
+
+/* Primary Button - Add to Cart (now at the bottom) */
+.product-btn-primary {
+  width: 100%;
+  padding: 12px 10px;
+  background-color: #13123e;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  position: relative;
+}
+
+.product-btn-primary:hover {
+  background-color: var(--primary-hover);
+  color: white;
+}
+
+.product-btn-primary i,
+.product-btn-secondary i {
+  margin-right: 6px;
+  font-size: 14px;
+}
+
+/* View All Button */
+.view-all-container {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.view-all-button {
+  display: inline-block;
+  padding: 12px 30px;
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  border-radius: 5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.view-all-button:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+  .products-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .products-grid {
+    gap: 20px;
+  }
+  
+  .product-image {
+    height: 200px;
+  }
+}
+
+@media (max-width: 576px) {
+  .products-grid {
+    grid-template-columns: 1fr;
+    max-width: 320px;
+  }
+  
+  .product-image {
+    height: 180px;
+  }
+}

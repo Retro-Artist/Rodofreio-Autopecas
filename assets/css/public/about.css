@@ -1,0 +1,642 @@
+/* assets/css/public/about.css */
+
+/* Page-specific namespacing for about page */
+.about-page {
+    background-color: var(--background-color);
+  }
+    
+  .about-page__wrapper {
+    padding-top: 0;
+  }
+    
+  .about-page__content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+    
+  /* Hero Banner Section */
+  .about-page .hero-banner {
+    position: relative;
+    height: 100px;
+    background: url('../../img/banner-background.jpg') no-repeat center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+    
+  .about-page .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(3, 4, 94, 0.8), rgba(0, 0, 139, 0.5));
+  }
+    
+  /* About Header Section */
+  .about-header {
+    margin: -50px 0 50px;
+    position: relative;
+    z-index: 10;
+  }
+    
+  .about-header .section-header {
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 40px 30px;
+    text-align: center;
+  }
+    
+  .about-header .section-header__title {
+    font-size: var(--font-3xl);
+    color: var(--primary-color);
+    margin-bottom: 15px;
+  }
+    
+  .about-header .section-header__description {
+    font-size: var(--font-md);
+    color: var(--text-light);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+    
+  /* About History Section */
+  .about-history {
+    padding: 60px 0;
+  }
+    
+  .about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+    
+  .about-text-image {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+    
+  .about-text {
+    flex: 1;
+  }
+    
+  .about-content__title {
+    font-size: var(--font-2xl);
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    position: relative;
+    padding-bottom: 15px;
+  }
+    
+  .about-content__title:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 80px;
+    height: 3px;
+    background-color: var(--secondary-color);
+  }
+    
+  .about-content__text {
+    font-size: var(--font-base);
+    line-height: 1.8;
+    color: var(--text-color);
+    margin-bottom: 20px;
+  }
+    
+  .about-image {
+    flex: 1;
+    max-width: 500px;
+  }
+    
+  .about-image img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+  }
+  
+  /* CTA Button em História */
+  .about-cta {
+    margin-top: 30px;
+  }
+  
+  .cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    font-weight: 600;
+    padding: 12px 25px;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    transition: var(--transition);
+  }
+  
+  .cta-button:hover {
+    background-color: var(--primary-hover);
+    color: var(--white);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  }
+  
+  .cta-button i {
+    font-size: var(--font-base);
+  }
+  
+  /* About MVV (Missão, Visão, Valores) Section */
+  .about-mvv {
+    padding: 60px 0;
+    background-color: var(--white);
+  }
+  
+  .about-mvv .section-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .about-mvv .section-header__title {
+    font-size: var(--font-2xl);
+    color: var(--primary-color);
+    position: relative;
+    display: inline-block;
+    padding-bottom: 15px;
+  }
+  
+  .about-mvv .section-header__title:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: var(--secondary-color);
+  }
+  
+  .about-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  .about-card {
+    background-color: var(--background-color);
+    border-radius: var(--border-radius);
+    padding: 30px;
+    box-shadow: var(--box-shadow);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .about-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-icon {
+    margin-bottom: 20px;
+  }
+  
+  .card-icon img {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .about-card__title {
+    font-size: var(--font-xl);
+    color: var(--primary-color);
+    margin-bottom: 15px;
+  }
+  
+  .about-card__text {
+    font-size: var(--font-base);
+    color: var(--text-color);
+    line-height: 1.6;
+  }
+  
+  /* Experience Section - Reused from home.css for consistency */
+  .experience-section {
+    padding: 60px 0;
+    background-color: var(--background-color);
+    background: url(../../img/suspension-part.png) no-repeat center;
+    background-size: contain;
+  }
+  
+  .experience-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  .experience-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 60px;
+  }
+  
+  .years-experience {
+    flex: 1;
+  }
+  
+  .years-experience__number {
+    font-size: 72px;
+    color: var(--primary-color);
+    margin-bottom: 0;
+    font-weight: 700;
+    line-height: 1;
+  }
+  
+  .years-experience__plus {
+    font-size: 48px;
+    vertical-align: super;
+  }
+  
+  .years-experience__title {
+    font-size: var(--font-xl);
+    margin-bottom: 20px;
+    color: var(--text-color);
+  }
+  
+  .years-experience__text {
+    font-size: var(--font-base);
+    color: var(--text-light);
+    max-width: 400px;
+    line-height: 1.6;
+  }
+  
+  .benefits-blocks {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+  
+  .benefit-block {
+    background-color: var(--white);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    display: flex;
+    gap: 20px;
+    transition: transform 0.3s ease;
+  }
+  
+  .benefit-block:hover {
+    transform: translateY(-5px);
+  }
+  
+  .benefit-image {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f8ff;
+    border-radius: 50%;
+    padding: 12px;
+  }
+  
+  .benefit-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  .benefit-content__title {
+    font-size: var(--font-base);
+    margin-bottom: 10px;
+    color: var(--primary-color);
+  }
+  
+  .benefit-content__description {
+    font-size: var(--font-sm);
+    color: var(--text-light);
+    line-height: 1.6;
+    margin: 0;
+  }
+  
+  /* Units Section (importado da página de contato) */
+  .units-section {
+    padding: 60px 0;
+    background-color: var(--background-color);
+  }
+  
+  .units-section .section-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .units-section .section-header__title {
+    font-size: var(--font-2xl);
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 15px;
+  }
+  
+  .units-section .section-header__title:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: var(--secondary-color);
+  }
+  
+  .units-section .section-header__description {
+    color: var(--text-light);
+    font-size: var(--font-base);
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  
+  .units-tabs {
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+  }
+  
+  .units-tabs__header {
+    display: flex;
+    background-color: var(--primary-color);
+  }
+  
+  .units-tabs__button {
+    flex: 1;
+    background-color: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 15px 10px;
+    font-size: var(--font-base);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+    border-bottom: 3px solid transparent;
+  }
+  
+  .units-tabs__button:hover {
+    color: var(--white);
+  }
+  
+  .units-tabs__button--active {
+    color: var(--white);
+    border-bottom-color: var(--secondary-color);
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .units-tabs__content {
+    padding: 0;
+  }
+  
+  .units-tabs__pane {
+    display: none;
+  }
+  
+  .units-tabs__pane--active {
+    display: block;
+  }
+  
+  .unit-map {
+    width: 100%;
+    height: 300px;
+  }
+  
+  .unit-map iframe {
+    display: block;
+  }
+  
+  .unit-info {
+    padding: 25px;
+  }
+  
+  .unit-info__title {
+    font-size: var(--font-lg);
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .unit-info__details {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .unit-info__item {
+    display: flex;
+    align-items: flex-start;
+  }
+  
+  .unit-info__item i {
+    color: var(--primary-color);
+    margin-right: 10px;
+    margin-top: 3px;
+  }
+  
+  .unit-info__item span {
+    font-size: var(--font-base);
+    color: var(--text-color);
+    line-height: 1.5;
+  }
+  
+  /* Brands Section */
+  .brands-section {
+    padding: 60px 0;
+    background-color: var(--background-color);
+  }
+  
+  .brands-section .section-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .brands-section .section-header__title {
+    font-size: var(--font-2xl);
+    color: var(--primary-color);
+    position: relative;
+    display: inline-block;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .brands-section .section-header__title:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: var(--secondary-color);
+  }
+  
+  .brands-section .section-header__description {
+    font-size: var(--font-base);
+    color: var(--text-light);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .brands-slider {
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 0 20px;
+  }
+  
+  .brands-track {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+  
+  .brands-track.animate {
+    animation: slide 30s linear infinite;
+  }
+  
+  .brand-item {
+    flex: 0 0 auto;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+  }
+  
+  .brand-item:hover {
+    opacity: 1;
+  }
+  
+  .brand-item img {
+    max-width: 100%;
+    max-height: 100px;
+    object-fit: contain;
+  }
+  
+  @keyframes slide {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 992px) {
+    .about-text-image {
+      flex-direction: column;
+    }
+    
+    .about-text,
+    .about-image {
+      max-width: 100%;
+    }
+    
+    .about-cards {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    
+    .benefits-blocks {
+      grid-template-columns: 1fr;
+    }
+    
+    .experience-block {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .years-experience {
+      margin-bottom: 30px;
+    }
+    
+    .years-experience__text {
+      margin: 0 auto;
+    }
+    
+    .units-tabs__header {
+      flex-wrap: wrap;
+    }
+    
+    .units-tabs__button {
+      flex: 1 0 50%;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .about-header .section-header {
+      padding: 30px 20px;
+    }
+    
+    .about-header .section-header__title {
+      font-size: var(--font-2xl);
+    }
+    
+    .about-mvv .section-header__title,
+    .units-section .section-header__title,
+    .brands-section .section-header__title {
+      font-size: var(--font-xl);
+    }
+    
+    .units-tabs__button {
+      flex: 1 0 100%;
+      padding: 12px 10px;
+    }
+    
+    .unit-info {
+      padding: 20px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .about-header {
+      margin-top: -30px;
+    }
+    
+    .about-header .section-header__title {
+      font-size: var(--font-xl);
+    }
+    
+    .about-header .section-header__description {
+      font-size: var(--font-sm);
+    }
+    
+    .years-experience__number {
+      font-size: 56px;
+    }
+    
+    .years-experience__plus {
+      font-size: 36px;
+    }
+    
+    .years-experience__title {
+      font-size: var(--font-lg);
+    }
+    
+    .experience-section,
+    .about-mvv,
+    .units-section,
+    .brands-section {
+      padding: 40px 0;
+    }
+  }
