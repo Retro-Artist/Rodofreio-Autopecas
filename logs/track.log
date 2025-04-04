@@ -1,0 +1,33 @@
+2025-04-04 10:28:38 - Received request
+2025-04-04 10:28:38 - Request body: {"product_id":"15","event_type":"view"}
+2025-04-04 10:28:38 - Event recorded successfully: 25
+2025-04-04 10:28:44 - Received request
+2025-04-04 10:28:44 - Request body: {"product_id":"15","event_type":"cart_add"}
+2025-04-04 10:28:44 - Event recorded successfully: 26
+2025-04-04 10:28:44 - Received request
+2025-04-04 10:28:44 - Request body: {"product_id":"15","event_type":"whatsapp_click"}
+2025-04-04 10:28:44 - Event recorded successfully: 27
+2025-04-04 10:28:45 - Received request
+2025-04-04 10:28:45 - Request body: {"product_id":"15","event_type":"cart_add"}
+2025-04-04 10:28:45 - Event recorded successfully: 28
+2025-04-04 10:28:45 - Received request
+2025-04-04 10:28:45 - Request body: {"product_id":"15","event_type":"whatsapp_click"}
+2025-04-04 10:28:45 - Event recorded successfully: 29
+2025-04-04 10:28:45 - Received request
+2025-04-04 10:28:45 - Request body: {"product_id":"15","event_type":"cart_add"}
+2025-04-04 10:28:45 - Event recorded successfully: 30
+2025-04-04 10:28:45 - Received request
+2025-04-04 10:28:45 - Request body: {"product_id":"15","event_type":"whatsapp_click"}
+2025-04-04 10:28:45 - Event recorded successfully: 31
+2025-04-04 10:28:45 - Received request
+2025-04-04 10:28:45 - Request body: {"product_id":"15","event_type":"cart_add"}
+2025-04-04 10:28:45 - Event recorded successfully: 32
+2025-04-04 10:28:45 - Received request
+2025-04-04 10:28:45 - Request body: {"product_id":"15","event_type":"whatsapp_click"}
+2025-04-04 10:28:45 - Event recorded successfully: 33
+2025-04-04 10:28:45 - Received request
+2025-04-04 10:28:45 - Request body: {"product_id":"15","event_type":"whatsapp_click"}
+2025-04-04 10:28:45 - Event recorded successfully: 34
+2025-04-04 10:28:45 - Received request
+2025-04-04 10:28:45 - Request body: {"product_id":"15","event_type":"cart_add"}
+2025-04-04 10:28:45 - Event recorded successfully: 35

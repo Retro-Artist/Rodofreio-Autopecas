@@ -515,11 +515,11 @@ try {
                                 </div>
                             </div>
 
-                            <!-- Loja 04 - Luís Eduardo Magalhães -->
+                            <!-- Loja 04 - Luís Eduardo Magalhães (BR-242) -->
                             <div class="units-tabs__pane" id="loja04">
                                 <div class="unit-map">
                                     <iframe
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3879.4756461906304!2d-45.8145982!3d-12.0887795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9339bfe89f0ee1b5%3A0xbdc7aaec4d0a312c!2sRod%2C%20BR-242%2C%2022%20-%20Chacaras%20Botelho%2C%20Lu%C3%ADs%20Eduardo%20Magalh%C3%A3es%20-%20BA%2C%2047850-000!5e0!3m2!1spt-BR!2sbr!4v1712264496553!5m2!1spt-BR!2sbr"
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3879.4727246766537!2d-45.81535463420349!3d-12.0887104309389!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x934a7b8e1356bfdd%3A0xa9c86c10b5c49d3c!2sRodofreios%20Auto%20Pe%C3%A7as!5e0!3m2!1spt-BR!2sbr!4v1712277035831!5m2!1spt-BR!2sbr"
                                         width="100%"
                                         height="300"
                                         style="border:0;"
@@ -547,11 +547,12 @@ try {
                                 </div>
                             </div>
 
+
                             <!-- Loja 08 - Luís Eduardo Magalhães (Boa Vista) -->
                             <div class="units-tabs__pane" id="loja08">
                                 <div class="unit-map">
                                     <iframe
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3879.3344323304593!2d-45.7920175!3d-12.1318955!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9339b2bddf6f8243%3A0xa07adc6bb6cc03bc!2sRUA%20ARNALDO%20HORACIO%20FERREIRA%2C%2090%20-%20COMERCIAL%2C%20Lu%C3%ADs%20Eduardo%20Magalh%C3%A3es%20-%20BA%2C%2047850-000!5e0!3m2!1spt-BR!2sbr!4v1712264552657!5m2!1spt-BR!2sbr"
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3879.325462068722!2d-45.79451923420413!3d-12.132269930976086!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x934a71d7e6656859%3A0x72e1edac443f25e!2sRodofreios%20Auto%20Pe%C3%A7as!5e0!3m2!1spt-BR!2sbr!4v1712277133158!5m2!1spt-BR!2sbr"
                                         width="100%"
                                         height="300"
                                         style="border:0;"
@@ -583,7 +584,7 @@ try {
                             <div class="units-tabs__pane" id="loja11">
                                 <div class="unit-map">
                                     <iframe
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3882.9642248172764!2d-44.9794516!3d-12.868517799999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x75ed9f5ec3ce2cb%3A0xb16b59303a8f7ea7!2sAv.%20Pastor%20Ant%C3%B4nio%20Ulisses%20Nascimento%20-%20CIDADE%20NOVA%2C%20Barreiras%20-%20BA%2C%2047804-101!5e0!3m2!1spt-BR!2sbr!4v1712264605696!5m2!1spt-BR!2sbr"
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3900.6815860532306!2d-44.9517795239601!3d-12.133925143531696!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x75f8ba135773de1%3A0x3f90c74ceab6387e!2sRODOFREIOS%20AUTO%20PE%C3%87AS!5e0!3m2!1spt-PT!2sbr!4v1743774456221!5m2!1spt-PT!2sbr"
                                         width="100%"
                                         height="300"
                                         style="border:0;"
@@ -611,11 +612,12 @@ try {
                                 </div>
                             </div>
 
+
                             <!-- Loja 09 - Dourados -->
                             <div class="units-tabs__pane" id="loja09">
                                 <div class="unit-map">
                                     <iframe
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3713.3033633323767!2d-54.81218722549064!3d-22.232448385354493!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9489a33118cde809%3A0x8e2b8fd809bb7903!2sR.%20Jos%C3%A9%20do%20Patroc%C3%ADnio%20-%20BONILHA%20DA%20CRUZ%2C%20Dourados%20-%20MS%2C%2079840-182!5e0!3m2!1spt-BR!2sbr!4v1712264664129!5m2!1spt-BR!2sbr"
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3693.11714691442!2d-54.78462872374088!3d-22.235633614231908!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x948907f3d91500a7%3A0x7be9d68fe0d25c56!2sRODOFREIOS%20AUTO%20PE%C3%87AS%20(Auto%20Pe%C3%A7as%20Shigenaga)!5e0!3m2!1spt-PT!2sbr!4v1743774492557!5m2!1spt-PT!2sbr"
                                         width="100%"
                                         height="300"
                                         style="border:0;"
@@ -679,7 +681,7 @@ try {
                             <div class="units-tabs__pane" id="loja07">
                                 <div class="unit-map">
                                     <iframe
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3890.9082254051233!2d-51.5718917!3d-10.645469800000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9323be9ed4a5e2d5%3A0xae3ffbbe52bc30e7!2sAV%20BRASIL%20QD%2001%20LOTA%2013%20-%20SETOR%20AEROPORTO%2C%20Confresa%20-%20MT%2C%2078652-000!5e0!3m2!1spt-BR!2sbr!4v1712264833057!5m2!1spt-BR!2sbr"
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3921.178113817575!2d-51.56853822398414!3d-10.643267117361237!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x931a097dd4427f19%3A0x7464d1ca8de2db8a!2sRODOFREIOS%20AUTO%20PE%C3%87AS!5e0!3m2!1spt-PT!2sbr!4v1743774526992!5m2!1spt-PT!2sbr"
                                         width="100%"
                                         height="300"
                                         style="border:0;"
