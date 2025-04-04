@@ -1,0 +1,100 @@
+/* ============ Adicionar ao arquivo CSS relevante ============ */
+
+/* Units Tabs com Layout de Sidebar */
+.units-tabs--sidebar .units-tabs__container {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+  }
+  
+  /* Sidebar lateral com as abas */
+  .units-tabs__sidebar {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--primary-color);
+    width: 220px;
+    flex-shrink: 0;
+  }
+  
+  /* Botões das abas na sidebar */
+  .units-tabs--sidebar .units-tabs__button {
+    padding: 15px;
+    text-align: left;
+    justify-content: flex-start;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 3px solid transparent;
+    border-radius: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .units-tabs--sidebar .units-tabs__button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .units-tabs--sidebar .units-tabs__button--active {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-left-color: var(--secondary-color);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Conteúdo dos painéis */
+  .units-tabs--sidebar .units-tabs__content {
+    flex: 1;
+    overflow: hidden;
+  }
+  
+  .units-tabs--sidebar .units-tabs__pane {
+    padding: 0;
+  }
+  
+  /* Ajustar a altura do mapa para melhor visualização */
+  .units-tabs--sidebar .unit-map {
+    height: 350px;
+  }
+  
+  /* Responsividade para tablets e dispositivos móveis */
+  @media (max-width: 992px) {
+    .units-tabs--sidebar .units-tabs__container {
+      flex-direction: column;
+    }
+    
+    .units-tabs__sidebar {
+      width: 100%;
+      flex-direction: row;
+      flex-wrap: wrap;
+      overflow-x: auto;
+    }
+    
+    .units-tabs--sidebar .units-tabs__button {
+      padding: 10px 15px;
+      flex: 0 0 auto;
+      border-left: none;
+      border-bottom: 3px solid transparent;
+    }
+    
+    .units-tabs--sidebar .units-tabs__button--active {
+      border-left-color: transparent;
+      border-bottom-color: var(--secondary-color);
+    }
+  }
+  
+  /* Para dispositivos muito pequenos */
+  @media (max-width: 576px) {
+    .units-tabs__sidebar {
+      flex-direction: column;
+    }
+    
+    .units-tabs--sidebar .units-tabs__button {
+      text-align: center;
+      width: 100%;
+    }
+    
+    .units-tabs--sidebar .unit-map {
+      height: 300px;
+    }
+  }

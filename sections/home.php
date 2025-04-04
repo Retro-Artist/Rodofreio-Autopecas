@@ -394,144 +394,356 @@ try {
                 </div>
             </section>
 
-            <!----------------------Nossas Unidades Section usando o componente da página de sobre---------------------->
-            <section class="units-section">
-                <div class="section-header">
-                    <h2 class="section-header__title">Nossas Unidades</h2>
-                    <p class="section-header__description">Atendimento presencial em nossas lojas espalhadas pelo Brasil</p>
-                </div>
+            <!----------------------Units Section---------------------->
+<section class="units-section">
+    <div class="section-header">
+        <h2 class="section-header__title">Nossas Unidades</h2>
+        <p class="section-header__description">Atendimento presencial em nossas lojas espalhadas pelo Brasil</p>
+    </div>
+    
+    <div class="units-tabs units-tabs--sidebar">
+        <div class="units-tabs__container">
+            <!-- Sidebar com as abas laterais -->
+            <div class="units-tabs__sidebar">
+                <button class="units-tabs__button units-tabs__button--active" data-target="loja01">Maringá - PR (Matriz)</button>
+                <button class="units-tabs__button" data-target="loja02">Maringá - PR</button>
+                <button class="units-tabs__button" data-target="loja03">Cambé - PR</button>
+                <button class="units-tabs__button" data-target="loja04">Luís Eduardo - BA</button>
+                <button class="units-tabs__button" data-target="loja08">L. Eduardo - BA (Boa Vista)</button>
+                <button class="units-tabs__button" data-target="loja11">Barreiras - BA</button>
+                <button class="units-tabs__button" data-target="loja09">Dourados - MS</button>
+                <button class="units-tabs__button" data-target="loja06">Rondonópolis - MT</button>
+                <button class="units-tabs__button" data-target="loja07">Confresa - MT</button>
+                <button class="units-tabs__button" data-target="loja12">Sinop - MT</button>
+            </div>
 
-                <div class="units-tabs">
-                    <div class="units-tabs__header">
-                        <button class="units-tabs__button units-tabs__button--active" data-target="maringa">Maringá - PR</button>
-                        <button class="units-tabs__button" data-target="londrina">Londrina - PR</button>
-                        <button class="units-tabs__button" data-target="cuiaba">Cuiabá - MT</button>
-                        <button class="units-tabs__button" data-target="salvador">Salvador - BA</button>
+            <!-- Conteúdo dos mapas e informações -->
+            <div class="units-tabs__content">
+                <!-- Loja 01 - Maringá (Matriz) -->
+                <div class="units-tabs__pane units-tabs__pane--active" id="loja01">
+                    <div class="unit-map">
+                        <iframe
+                            src="https://www.google.com/maps/embed?q=R%20ESTADOS%20UNIDOS%201423%20JARDIM%20INTERNORTE%2C%20Maring%C3%A1%20-%20PR&z=16"
+                            width="100%"
+                            height="300"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
                     </div>
-
-                    <div class="units-tabs__content">
-                        <div class="units-tabs__pane units-tabs__pane--active" id="maringa">
-                            <div class="unit-map">
-                                <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3660.4481262589344!2d-51.93804!3d-23.425478!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDI1JzMxLjciUyA1McKwNTYnMTYuOSJX!5e0!3m2!1spt-BR!2sbr!4v1616682157654!5m2!1spt-BR!2sbr"
-                                    width="100%"
-                                    height="300"
-                                    style="border:0;"
-                                    allowfullscreen=""
-                                    loading="lazy">
-                                </iframe>
+                    <div class="unit-info">
+                        <h3 class="unit-info__title">LOJA 01 - Matriz Maringá</h3>
+                        <div class="unit-info__details">
+                            <div class="unit-info__item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>R ESTADOS UNIDOS 1423 JARDIM INTERNORTE, Maringá - PR</span>
                             </div>
-                            <div class="unit-info">
-                                <h3 class="unit-info__title">Matriz Maringá</h3>
-                                <div class="unit-info__details">
-                                    <div class="unit-info__item">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <span>Av. Colombo, 1500 - Centro, Maringá - PR</span>
-                                    </div>
-                                    <div class="unit-info__item">
-                                        <i class="fas fa-phone-alt"></i>
-                                        <span>(44) 3333-4444</span>
-                                    </div>
-                                    <div class="unit-info__item">
-                                        <i class="fas fa-clock"></i>
-                                        <span>Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00</span>
-                                    </div>
-                                </div>
+                            <div class="unit-info__item">
+                                <i class="fas fa-phone-alt"></i>
+                                <span>(44) 3027-7373</span>
                             </div>
-                        </div>
-
-                        <div class="units-tabs__pane" id="londrina">
-                            <div class="unit-map">
-                                <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3660.4481262589344!2d-51.93804!3d-23.425478!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDI1JzMxLjciUyA1McKwNTYnMTYuOSJX!5e0!3m2!1spt-BR!2sbr!4v1616682157654!5m2!1spt-BR!2sbr"
-                                    width="100%"
-                                    height="300"
-                                    style="border:0;"
-                                    allowfullscreen=""
-                                    loading="lazy">
-                                </iframe>
-                            </div>
-                            <div class="unit-info">
-                                <h3 class="unit-info__title">Filial Londrina</h3>
-                                <div class="unit-info__details">
-                                    <div class="unit-info__item">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <span>Av. Tiradentes, 1000 - Zona Sul, Londrina - PR</span>
-                                    </div>
-                                    <div class="unit-info__item">
-                                        <i class="fas fa-phone-alt"></i>
-                                        <span>(43) 3333-4444</span>
-                                    </div>
-                                    <div class="unit-info__item">
-                                        <i class="fas fa-clock"></i>
-                                        <span>Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="units-tabs__pane" id="cuiaba">
-                            <div class="unit-map">
-                                <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3660.4481262589344!2d-51.93804!3d-23.425478!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDI1JzMxLjciUyA1McKwNTYnMTYuOSJX!5e0!3m2!1spt-BR!2sbr!4v1616682157654!5m2!1spt-BR!2sbr"
-                                    width="100%"
-                                    height="300"
-                                    style="border:0;"
-                                    allowfullscreen=""
-                                    loading="lazy">
-                                </iframe>
-                            </div>
-                            <div class="unit-info">
-                                <h3 class="unit-info__title">Filial Cuiabá</h3>
-                                <div class="unit-info__details">
-                                    <div class="unit-info__item">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <span>Av. Fernando Corrêa, 3000 - Coxipó, Cuiabá - MT</span>
-                                    </div>
-                                    <div class="unit-info__item">
-                                        <i class="fas fa-phone-alt"></i>
-                                        <span>(65) 3333-4444</span>
-                                    </div>
-                                    <div class="unit-info__item">
-                                        <i class="fas fa-clock"></i>
-                                        <span>Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="units-tabs__pane" id="salvador">
-                            <div class="unit-map">
-                                <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3660.4481262589344!2d-51.93804!3d-23.425478!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDI1JzMxLjciUyA1McKwNTYnMTYuOSJX!5e0!3m2!1spt-BR!2sbr!4v1616682157654!5m2!1spt-BR!2sbr"
-                                    width="100%"
-                                    height="300"
-                                    style="border:0;"
-                                    allowfullscreen=""
-                                    loading="lazy">
-                                </iframe>
-                            </div>
-                            <div class="unit-info">
-                                <h3 class="unit-info__title">Filial Salvador</h3>
-                                <div class="unit-info__details">
-                                    <div class="unit-info__item">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <span>Av. Tancredo Neves, 2500 - Caminho das Árvores, Salvador - BA</span>
-                                    </div>
-                                    <div class="unit-info__item">
-                                        <i class="fas fa-phone-alt"></i>
-                                        <span>(71) 3333-4444</span>
-                                    </div>
-                                    <div class="unit-info__item">
-                                        <i class="fas fa-clock"></i>
-                                        <span>Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00</span>
-                                    </div>
-                                </div>
+                            <div class="unit-info__item">
+                                <i class="fas fa-clock"></i>
+                                <span>Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00</span>
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>
+                
+                <!-- Loja 02 - Maringá -->
+                <div class="units-tabs__pane" id="loja02">
+                    <div class="unit-map">
+                        <iframe
+                            src="https://www.google.com/maps/embed?q=RODOVIA%20BR-376%2010082%20N%20130%20JD%20KOSMOS%2C%20Maring%C3%A1%20-%20PR&z=16"
+                            width="100%"
+                            height="300"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                    <div class="unit-info">
+                        <h3 class="unit-info__title">LOJA 02 - Maringá</h3>
+                        <div class="unit-info__details">
+                            <div class="unit-info__item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>RODOVIA BR-376 10082 N 130 JD KOSMOS, Maringá - PR</span>
+                            </div>
+                            <div class="unit-info__item">
+                                <i class="fas fa-phone-alt"></i>
+                                <span>(44) 3027-7373</span>
+                            </div>
+                            <div class="unit-info__item">
+                                <i class="fas fa-clock"></i>
+                                <span>Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Loja 03 - Cambé -->
+                <div class="units-tabs__pane" id="loja03">
+                    <div class="unit-map">
+                        <iframe
+                            src="https://www.google.com/maps/embed?q=RUA%20JOS%C3%89%20CARLOS%20MUFATTO%20N%202024%20-%20JARDIM%20ANA%20ELIZA%20II%2C%20Camb%C3%A9%20-%20PR&z=16"
+                            width="100%"
+                            height="300"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                    <div class="unit-info">
+                        <h3 class="unit-info__title">LOJA 03 - Cambé</h3>
+                        <div class="unit-info__details">
+                            <div class="unit-info__item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>RUA JOSÉ CARLOS MUFATTO N 2024 - JARDIM ANA ELIZA II, Cambé - PR</span>
+                            </div>
+                            <div class="unit-info__item">
+                                <i class="fas fa-phone-alt"></i>
+                                <span>(43) 3174-0600</span>
+                            </div>
+                            <div class="unit-info__item">
+                                <i class="fas fa-clock"></i>
+                                <span>Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Loja 04 - Luís Eduardo Magalhães -->
+                <div class="units-tabs__pane" id="loja04">
+                    <div class="unit-map">
+                        <iframe
+                            src="https://www.google.com/maps/embed?q=AV%20LESTE%20N%2067%20CIDADE%20DO%20AUTOMOVEL%2C%20Lu%C3%ADs%20Eduardo%20Magalh%C3%A3es%20-%20BA&z=16"
+                            width="100%"
+                            height="300"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                    <div class="unit-info">
+                        <h3 class="unit-info__title">LOJA 04 - Luís Eduardo Magalhães</h3>
+                        <div class="unit-info__details">
+                            <div class="unit-info__item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>AV LESTE N 67 CIDADE DO AUTOMOVEL, Luís Eduardo Magalhães - BA</span>
+                            </div>
+                            <div class="unit-info__item">
+                                <i class="fas fa-phone-alt"></i>
+                                <span>(77) 3628-9889</span>
+                            </div>
+                            <div class="unit-info__item">
+                                <i class="fas fa-clock"></i>
+                                <span>Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Loja 08 - Luís Eduardo Magalhães 2 -->
+                <div class="units-tabs__pane" id="loja08">
+                    <div class="unit-map">
+                        <iframe
+                            src="https://www.google.com/maps/embed?q=RUA%20PALMAS%20LOTE%2014%20QD%2099%20N%20721%20BAIRRO%20BOA%20VISTA%2C%20Lu%C3%ADs%20Eduardo%20Magalh%C3%A3es%20-%20BA&z=16"
+                            width="100%"
+                            height="300"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                    <div class="unit-info">
+                        <h3 class="unit-info__title">LOJA 08 - Luís Eduardo Magalhães (Boa Vista)</h3>
+                        <div class="unit-info__details">
+                            <div class="unit-info__item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>RUA PALMAS LOTE 14 QD 99 N 721 BAIRRO BOA VISTA, Luís Eduardo Magalhães - BA</span>
+                            </div>
+                            <div class="unit-info__item">
+                                <i class="fas fa-phone-alt"></i>
+                                <span>(77) 3628-9880</span>
+                            </div>
+                            <div class="unit-info__item">
+                                <i class="fas fa-clock"></i>
+                                <span>Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Loja 11 - Barreiras -->
+                <div class="units-tabs__pane" id="loja11">
+                    <div class="unit-map">
+                        <iframe
+                            src="https://www.google.com/maps/embed?q=AV.%20PASTOR%20ANTONIO%20ULISSES%20NASCIMENTO%201817%20-%20CIDADE%20NOVA%2C%20Barreiras%20-%20BA&z=16"
+                            width="100%"
+                            height="300"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                    <div class="unit-info">
+                        <h3 class="unit-info__title">LOJA 11 - Barreiras</h3>
+                        <div class="unit-info__details">
+                            <div class="unit-info__item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>AV. PASTOR ANTONIO ULISSES NASCIMENTO 1817 - CIDADE NOVA, Barreiras - BA</span>
+                            </div>
+                            <div class="unit-info__item">
+                                <i class="fas fa-phone-alt"></i>
+                                <span>(77) 3612-2100</span>
+                            </div>
+                            <div class="unit-info__item">
+                                <i class="fas fa-clock"></i>
+                                <span>Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Loja 09 - Dourados -->
+                <div class="units-tabs__pane" id="loja09">
+                    <div class="unit-map">
+                        <iframe
+                            src="https://www.google.com/maps/embed?q=RUA%20JOS%C3%89%20BONILHA%20DA%20CRUZ%207260%20-%20PARQUE%20DAS%20NA%C3%87%C3%95ES%2C%20Dourados%20-%20MS&z=16"
+                            width="100%"
+                            height="300"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                    <div class="unit-info">
+                        <h3 class="unit-info__title">LOJA 09 - Dourados</h3>
+                        <div class="unit-info__details">
+                            <div class="unit-info__item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>RUA JOSÉ BONILHA DA CRUZ 7260 - PARQUE DAS NAÇÕES, Dourados - MS</span>
+                            </div>
+                            <div class="unit-info__item">
+                                <i class="fas fa-phone-alt"></i>
+                                <span>(67) 3033-5050</span>
+                            </div>
+                            <div class="unit-info__item">
+                                <i class="fas fa-clock"></i>
+                                <span>Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Loja 06 - Rondonópolis -->
+                <div class="units-tabs__pane" id="loja06">
+                    <div class="unit-map">
+                        <iframe
+                            src="https://www.google.com/maps/embed?q=AV%20PERIMETRAL%201469%20-%20TREV%C3%83O%2C%20Rondon%C3%B3polis%20-%20MT&z=16"
+                            width="100%"
+                            height="300"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                    <div class="unit-info">
+                        <h3 class="unit-info__title">LOJA 06 - Rondonópolis</h3>
+                        <div class="unit-info__details">
+                            <div class="unit-info__item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>AV PERIMETRAL 1469 - TREVÃO, Rondonópolis - MT</span>
+                            </div>
+                            <div class="unit-info__item">
+                                <i class="fas fa-phone-alt"></i>
+                                <span>(66) 3022-4999</span>
+                            </div>
+                            <div class="unit-info__item">
+                                <i class="fas fa-clock"></i>
+                                <span>Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Loja 07 - Confresa -->
+                <div class="units-tabs__pane" id="loja07">
+                    <div class="unit-map">
+                        <iframe
+                            src="https://www.google.com/maps/embed?q=AV%20BRASIL%20QUADRA%201%20LOTE%2013%20AEROPORTO%2C%20Confresa%20-%20MT&z=16"
+                            width="100%"
+                            height="300"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                    <div class="unit-info">
+                        <h3 class="unit-info__title">LOJA 07 - Confresa</h3>
+                        <div class="unit-info__details">
+                            <div class="unit-info__item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>AV BRASIL QUADRA 1 LOTE 13 AEROPORTO, Confresa - MT</span>
+                            </div>
+                            <div class="unit-info__item">
+                                <i class="fas fa-phone-alt"></i>
+                                <span>(66) 3564-1515</span>
+                            </div>
+                            <div class="unit-info__item">
+                                <i class="fas fa-clock"></i>
+                                <span>Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Loja 12 - Sinop -->
+                <div class="units-tabs__pane" id="loja12">
+                    <div class="unit-map">
+                        <iframe
+                            src="https://www.google.com/maps/embed?q=RUA%20COLONIZADOR%20%C3%8ANIO%20PIPINO%201293%20-%20SETOR%20INDUSTRIAL%20SUL%2C%20Sinop%20-%20MT&z=16"
+                            width="100%"
+                            height="300"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                    <div class="unit-info">
+                        <h3 class="unit-info__title">LOJA 12 - Sinop</h3>
+                        <div class="unit-info__details">
+                            <div class="unit-info__item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>RUA COLONIZADOR ÊNIO PIPINO 1293 - SETOR INDUSTRIAL SUL, Sinop - MT</span>
+                            </div>
+                            <div class="unit-info__item">
+                                <i class="fas fa-phone-alt"></i>
+                                <span>(66) 3515-5757</span>
+                            </div>
+                            <div class="unit-info__item">
+                                <i class="fas fa-clock"></i>
+                                <span>Segunda a Sexta: 8:00 - 18:00 | Sábado: 8:00 - 13:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+            
         </div>
     </div>
 </main>
@@ -551,24 +763,29 @@ try {
         }
     });
 
-    // Javascript da area Google Maps "Nossas Unidades"
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Selecionando os botões de abas e os painéis (funciona tanto para abas horizontais quanto verticais)
     const tabButtons = document.querySelectorAll('.units-tabs__button');
     const tabPanes = document.querySelectorAll('.units-tabs__pane');
-
+    
     tabButtons.forEach(button => {
         button.addEventListener('click', function() {
             // Remove active class from all buttons
             tabButtons.forEach(btn => btn.classList.remove('units-tabs__button--active'));
-
+            
             // Add active class to current button
             this.classList.add('units-tabs__button--active');
-
+            
             // Hide all panes
             tabPanes.forEach(pane => pane.classList.remove('units-tabs__pane--active'));
-
+            
             // Show the target pane
             const target = this.dataset.target;
             document.getElementById(target).classList.add('units-tabs__pane--active');
         });
     });
+});
 </script>
