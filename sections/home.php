@@ -156,13 +156,13 @@ try {
             <!----------------------Brands/Partners Section---------------------->
             <section class="brands-section">
                 <div class="section-header">
-                    <h2 class="section-header__title">Marcas Parceiras</h2>
+                    <h2 class="section-header__title">Trabalhamos Com</h2>
                 </div>
 
                 <div class="brands-slider">
                     <div class="brands-track">
                         <div class="brand-item">
-                            <img src="<?= IMAGES_URL ?>marca-01.png" alt="Marca Parceira">
+                            <img src="<?= IMAGES_URL ?>marca-02.png" alt="Marca Parceira">
                         </div>
                         <div class="brand-item">
                             <img src="<?= IMAGES_URL ?>marca-03.png" alt="Marca Parceira">
@@ -174,7 +174,7 @@ try {
                             <img src="<?= IMAGES_URL ?>marca-05.png" alt="Marca Parceira">
                         </div>
                         <div class="brand-item">
-                            <img src="<?= IMAGES_URL ?>marca-06.png" alt="Marca Parceira">
+                            <img src="<?= IMAGES_URL ?>marca-08.png" alt="Marca Parceira">
                         </div>
                     </div>
                 </div>
@@ -252,7 +252,7 @@ try {
                                 </div>
                                 <div class="feature-content">
                                     <h3 class="feature-content__title">Qualidade Certificada</h3>
-                                    <p class="feature-content__text">Trabalhamos apenas com marcas homologadas e peças originais ou de primeira linha, garantindo durabilidade e performance para seu veículo comercial ou de transporte pesado.</p>
+                                    <p class="feature-content__text">Trabalhamos apenas com marcas homologadas e peças originais ou de primeira linha, garantindo durabilidade e performance para seu transporte pesado.</p>
                                 </div>
                             </div>
 
@@ -262,7 +262,7 @@ try {
                                 </div>
                                 <div class="feature-content">
                                     <h3 class="feature-content__title">Suporte Técnico Especializado</h3>
-                                    <p class="feature-content__text">Nossa equipe de especialistas oferece consultoria personalizada, ajudando você a encontrar a peça perfeita e garantindo a melhor solução para sua necessidade específica.</p>
+                                    <p class="feature-content__text">Nossa equipe de especialistas oferece atendimento personalizado, ajudando você a encontrar a peça perfeita e garantindo a melhor solução para sua necessidade específica.</p>
                                 </div>
                             </div>
                         </div>
