@@ -394,7 +394,7 @@ try {
                 </div>
             </section>
 
-            <!----------------------Units Section---------------------->
+<!----------------------Units Section---------------------->
 <section class="units-section">
     <div class="section-header">
         <h2 class="section-header__title">Nossas Unidades</h2>
@@ -423,7 +423,7 @@ try {
                 <div class="units-tabs__pane units-tabs__pane--active" id="loja01">
                     <div class="unit-map">
                         <iframe
-                            src="https://www.google.com/maps/embed?q=R%20ESTADOS%20UNIDOS%201423%20JARDIM%20INTERNORTE%2C%20Maring%C3%A1%20-%20PR&z=16"
+                            src="https://www.google.com/maps/embed?q=-23.399132,-51.919142&z=17"
                             width="100%"
                             height="300"
                             style="border:0;"
@@ -455,7 +455,7 @@ try {
                 <div class="units-tabs__pane" id="loja02">
                     <div class="unit-map">
                         <iframe
-                            src="https://www.google.com/maps/embed?q=RODOVIA%20BR-376%2010082%20N%20130%20JD%20KOSMOS%2C%20Maring%C3%A1%20-%20PR&z=16"
+                            src="https://www.google.com/maps/embed?q=-23.394964,-51.973733&z=17"
                             width="100%"
                             height="300"
                             style="border:0;"
@@ -487,7 +487,7 @@ try {
                 <div class="units-tabs__pane" id="loja03">
                     <div class="unit-map">
                         <iframe
-                            src="https://www.google.com/maps/embed?q=RUA%20JOS%C3%89%20CARLOS%20MUFATTO%20N%202024%20-%20JARDIM%20ANA%20ELIZA%20II%2C%20Camb%C3%A9%20-%20PR&z=16"
+                            src="https://www.google.com/maps/embed?q=-23.304264,-51.290156&z=17"
                             width="100%"
                             height="300"
                             style="border:0;"
@@ -519,7 +519,7 @@ try {
                 <div class="units-tabs__pane" id="loja04">
                     <div class="unit-map">
                         <iframe
-                            src="https://www.google.com/maps/embed?q=AV%20LESTE%20N%2067%20CIDADE%20DO%20AUTOMOVEL%2C%20Lu%C3%ADs%20Eduardo%20Magalh%C3%A3es%20-%20BA&z=16"
+                            src="https://www.google.com/maps/embed?q=-12.088780,-45.812416&z=17"
                             width="100%"
                             height="300"
                             style="border:0;"
@@ -551,7 +551,7 @@ try {
                 <div class="units-tabs__pane" id="loja08">
                     <div class="unit-map">
                         <iframe
-                            src="https://www.google.com/maps/embed?q=RUA%20PALMAS%20LOTE%2014%20QD%2099%20N%20721%20BAIRRO%20BOA%20VISTA%2C%20Lu%C3%ADs%20Eduardo%20Magalh%C3%A3es%20-%20BA&z=16"
+                            src="https://www.google.com/maps/embed?q=-12.131896,-45.789513&z=17"
                             width="100%"
                             height="300"
                             style="border:0;"
@@ -583,7 +583,7 @@ try {
                 <div class="units-tabs__pane" id="loja11">
                     <div class="unit-map">
                         <iframe
-                            src="https://www.google.com/maps/embed?q=AV.%20PASTOR%20ANTONIO%20ULISSES%20NASCIMENTO%201817%20-%20CIDADE%20NOVA%2C%20Barreiras%20-%20BA&z=16"
+                            src="https://www.google.com/maps/embed?q=-12.868518,-44.977263&z=17"
                             width="100%"
                             height="300"
                             style="border:0;"
@@ -615,7 +615,7 @@ try {
                 <div class="units-tabs__pane" id="loja09">
                     <div class="unit-map">
                         <iframe
-                            src="https://www.google.com/maps/embed?q=RUA%20JOS%C3%89%20BONILHA%20DA%20CRUZ%207260%20-%20PARQUE%20DAS%20NA%C3%87%C3%95ES%2C%20Dourados%20-%20MS&z=16"
+                            src="https://www.google.com/maps/embed?q=-22.232450,-54.809601&z=17"
                             width="100%"
                             height="300"
                             style="border:0;"
@@ -647,7 +647,7 @@ try {
                 <div class="units-tabs__pane" id="loja06">
                     <div class="unit-map">
                         <iframe
-                            src="https://www.google.com/maps/embed?q=AV%20PERIMETRAL%201469%20-%20TREV%C3%83O%2C%20Rondon%C3%B3polis%20-%20MT&z=16"
+                            src="https://www.google.com/maps/embed?q=-16.659225,-54.641013&z=17"
                             width="100%"
                             height="300"
                             style="border:0;"
@@ -679,7 +679,7 @@ try {
                 <div class="units-tabs__pane" id="loja07">
                     <div class="unit-map">
                         <iframe
-                            src="https://www.google.com/maps/embed?q=AV%20BRASIL%20QUADRA%201%20LOTE%2013%20AEROPORTO%2C%20Confresa%20-%20MT&z=16"
+                            src="https://www.google.com/maps/embed?q=-10.645470,-51.569375&z=17"
                             width="100%"
                             height="300"
                             style="border:0;"
@@ -711,7 +711,7 @@ try {
                 <div class="units-tabs__pane" id="loja12">
                     <div class="unit-map">
                         <iframe
-                            src="https://www.google.com/maps/embed?q=RUA%20COLONIZADOR%20%C3%8ANIO%20PIPINO%201293%20-%20SETOR%20INDUSTRIAL%20SUL%2C%20Sinop%20-%20MT&z=16"
+                            src="https://www.google.com/maps/embed?q=-11.855265,-55.506640&z=17"
                             width="100%"
                             height="300"
                             style="border:0;"
@@ -742,7 +742,6 @@ try {
         </div>
     </div>
 </section>
-
             
         </div>
     </div>
@@ -765,8 +764,7 @@ try {
 
 
 
-
-document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
     // Selecionando os botões de abas e os painéis (funciona tanto para abas horizontais quanto verticais)
     const tabButtons = document.querySelectorAll('.units-tabs__button');
     const tabPanes = document.querySelectorAll('.units-tabs__pane');
