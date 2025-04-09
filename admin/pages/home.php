@@ -76,8 +76,9 @@ ORDER BY product_count DESC";
 $categoryStats = $pdo->query($categoryStatsQuery)->fetchAll();
 
 // Get recent products (últimos 8)
-$recentQuery = "SELECT p.id, p.title, p.slug, p.sku, p.description, p.status, 
-                p.featured, p.availability, p.main_picture, p.created_at, c.name as category_name 
+$recentQuery = "SELECT p.id, p.title, p.slug, p.original_code, p.manufacturer_code, 
+                p.description, p.status, p.featured, p.availability, p.main_picture, 
+                p.created_at, c.name as category_name 
                 FROM posts p
                 LEFT JOIN categories c ON p.category_id = c.id 
                 ORDER BY p.created_at DESC 
@@ -226,6 +227,19 @@ $topViewedProducts = $pdo->query($topViewedQuery)->fetchAll();
                             <h4 class="product-mini__title"><?= htmlspecialchars($product['title']) ?></h4>
                             <div class="product-mini__meta">
                                 <span class="product-mini__category"><?= htmlspecialchars($product['category_name'] ?? 'Sem categoria') ?></span>
+                                <?php if (!empty($product['original_code']) || !empty($product['manufacturer_code'])): ?>
+                                <div class="product-mini__codes">
+                                    <?php if (!empty($product['original_code'])): ?>
+                                    <span class="code-label">Original: </span>
+                                    <span class="code-value"><?= htmlspecialchars($product['original_code']) ?></span>
+                                    <?php endif; ?>
+                                    
+                                    <?php if (!empty($product['manufacturer_code'])): ?>
+                                    <span class="code-label">Fabricante: </span>
+                                    <span class="code-value"><?= htmlspecialchars($product['manufacturer_code']) ?></span>
+                                    <?php endif; ?>
+                                </div>
+                                <?php endif; ?>
                             </div>
                             <div class="product-mini__status">
                                 <?php if ($product['status'] === 'published'): ?>
@@ -306,6 +320,27 @@ $topViewedProducts = $pdo->query($topViewedQuery)->fetchAll();
         </div>
     </div>
 </div>
+
+<style>
+    /* Additional styling for product codes */
+    .product-mini__codes {
+        font-size: 0.85em;
+        margin-top: 5px;
+        color: #666;
+    }
+    
+    .code-label {
+        font-weight: 500;
+    }
+    
+    .code-value {
+        font-family: monospace;
+        background-color: #f8f9fa;
+        padding: 2px 4px;
+        border-radius: 2px;
+        margin-right: 8px;
+    }
+</style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

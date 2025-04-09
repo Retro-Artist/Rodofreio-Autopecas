@@ -1,0 +1,12 @@
+2025-04-09 16:52:42 - Received request
+2025-04-09 16:52:42 - Request body: {"product_id":"13","event_type":"view"}
+2025-04-09 16:52:42 - Event recorded successfully: 144
+2025-04-09 16:52:47 - Received request
+2025-04-09 16:52:47 - Request body: {"product_id":"13","event_type":"cart_add"}
+2025-04-09 16:52:47 - Event recorded successfully: 145
+2025-04-09 16:52:47 - Received request
+2025-04-09 16:52:47 - Request body: {"product_id":"13","event_type":"whatsapp_click"}
+2025-04-09 16:52:47 - Event recorded successfully: 146
+2025-04-09 16:57:21 - Received request
+2025-04-09 16:57:21 - Request body: {"product_id":"26","event_type":"view"}
+2025-04-09 16:57:21 - Event recorded successfully: 147

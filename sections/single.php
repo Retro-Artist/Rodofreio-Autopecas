@@ -30,8 +30,6 @@ try {
         exit;
     }
 
-    // Dados do produto
-    $sku = $product['sku'] ?? 'RP-' . $product['id'];
     $availability = isset($product['availability']) ? $product['availability'] == 1 : true;
 } catch (PDOException $e) {
     error_log($e->getMessage());
@@ -126,7 +124,7 @@ if (!empty($product['category_id'])) {
                     <h1 class="product-title"><?= htmlspecialchars($product['title']) ?></h1>
 
                     <div class="product-meta">
-                        <div class="product-sku">SKU: <?= htmlspecialchars($sku) ?></div>
+       
 
                         <?php if (!empty($product['category_name'])): ?>
                             <div class="product-category">
@@ -180,7 +178,7 @@ if (!empty($product['category_id'])) {
                             <i class="fas fa-shopping-cart"></i> Adicionar ao Carrinho
                         </button>
 
-                        <a href="<?= getWhatsAppUrl(WHATSAPP_NUMBER, 'Olá, tenho interesse no produto: ' . $product['title'] . ' (SKU: ' . $sku . ')') ?>"
+                        <a href="<?= getWhatsAppUrl(WHATSAPP_NUMBER, 'Olá, tenho interesse no produto: ' . $product['title'] ) ?>"
                             class="whatsapp-button" target="_blank">
                             <i class="fab fa-whatsapp"></i> Compre agora pelo WhatsApp
                         </a>

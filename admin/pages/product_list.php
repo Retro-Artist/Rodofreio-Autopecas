@@ -33,8 +33,9 @@ $params = [];
 
 // Adicionar condições com base nos filtros
 if (!empty($search)) {
-    $base_query .= " AND (p.title LIKE ? OR p.description LIKE ? OR p.sku LIKE ?)";
+    $base_query .= " AND (p.title LIKE ? OR p.description LIKE ? OR p.original_code LIKE ? OR p.manufacturer_code LIKE ?)";
     $search_param = "%{$search}%";
+    $params[] = $search_param;
     $params[] = $search_param;
     $params[] = $search_param;
     $params[] = $search_param;
@@ -65,8 +66,8 @@ $total_items = $count_stmt->fetchColumn();
 $total_pages = ceil($total_items / $items_per_page);
 $offset = ($current_page - 1) * $items_per_page;
 
-// Consulta para obter produtos da página atual - REMOVIDO PRICE E SALE_PRICE
-$product_query = "SELECT p.id, p.title, p.sku, 
+// Consulta para obter produtos da página atual
+$product_query = "SELECT p.id, p.title, p.original_code, p.manufacturer_code, 
                   p.status, p.featured, p.availability, p.main_picture, 
                   p.created_at, c.name as category_name, p.slug 
                   " . $base_query . " 
@@ -124,7 +125,7 @@ try {
                 <div class="filter-group">
                     <label for="search">Buscar</label>
                     <input type="text" id="search" name="search" value="<?= htmlspecialchars($search) ?>"
-                        placeholder="Nome, descrição ou SKU">
+                        placeholder="Nome, descrição ou códigos">
                 </div>
 
                 <div class="filter-group">
@@ -184,7 +185,8 @@ try {
                         <tr>
                             <th width="60">Imagem</th>
                             <th>Produto</th>
-                            <th>SKU</th>
+                            <th>Código Original</th>
+                            <th>Código Fabricante</th>
                             <th>Categoria</th>
                             <th>WhatsApp</th>
                             <th>Status</th>
@@ -209,7 +211,10 @@ try {
                                     <?php endif; ?>
                                 </td>
                                 <td>
-                                    <span class="product-sku"><?= htmlspecialchars($product['sku'] ?? "RP-{$product['id']}") ?></span>
+                                    <span class="product-code"><?= htmlspecialchars($product['original_code'] ?? "—") ?></span>
+                                </td>
+                                <td>
+                                    <span class="product-code"><?= htmlspecialchars($product['manufacturer_code'] ?? "—") ?></span>
                                 </td>
                                 <td>
                                     <?php if (!empty($product['category_name'])): ?>

@@ -150,8 +150,8 @@
                             <button class="units-tabs__button units-tabs__button--active" data-target="loja01">Maringá - PR (Matriz)</button>
                             <button class="units-tabs__button" data-target="loja02">Maringá - PR</button>
                             <button class="units-tabs__button" data-target="loja03">Londrina - PR</button>
-                            <button class="units-tabs__button" data-target="loja04">Luís Eduardo - BA</button>
-                            <button class="units-tabs__button" data-target="loja08">L. Eduardo - BA (Boa Vista)</button>
+                            <button class="units-tabs__button" data-target="loja04">(1) Luís Eduardo - BA</button>
+                            <button class="units-tabs__button" data-target="loja08">(2) Luís Eduardo - BA</button>
                             <button class="units-tabs__button" data-target="loja11">Barreiras - BA</button>
                             <button class="units-tabs__button" data-target="loja09">Dourados - MS</button>
                             <button class="units-tabs__button" data-target="loja06">Rondonópolis - MT</button>
@@ -304,7 +304,7 @@
                                     </iframe>
                                 </div>
                                 <div class="unit-info">
-                                    <h3 class="unit-info__title">LOJA 08 - Luís Eduardo Magalhães (Boa Vista)</h3>
+                                    <h3 class="unit-info__title">LOJA 08 - Luís Eduardo Magalhães</h3>
                                     <div class="unit-info__details">
                                         <div class="unit-info__item">
                                             <i class="fas fa-map-marker-alt"></i>
@@ -486,6 +486,7 @@
                     </div>
                 </div>
             </section>
+
 
             <!----------------------Brands/Partners Section---------------------->
             <section class="brands-section">

@@ -50,7 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $featured = isset($_POST['featured']) ? 1 : 0;
     $availability = isset($_POST['availability']) ? 1 : 0;
     $category_id = !empty($_POST['category_id']) ? (int)$_POST['category_id'] : null;
-    $sku = trim($_POST['sku'] ?? '');
+    $original_code = trim($_POST['original_code'] ?? '');
+    $manufacturer_code = trim($_POST['manufacturer_code'] ?? '');
 
     // Generate a new slug based on the title
     $slug = createSlug($title);
@@ -87,10 +88,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $message = 'Por favor, preencha todos os campos obrigatórios.';
         $messageClass = 'error';
     } else {
-        // This code should replace the try-catch block in product_update.php where the UPDATE query is executed
-
-        // Substitua o bloco try-catch no arquivo product_update.php por este código
-
         try {
             // Verificar se o slug já existe (ignorando o produto atual)
             $checkSlugQuery = "SELECT COUNT(*) FROM posts WHERE slug = :slug AND id != :id";
@@ -116,7 +113,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             tags = :tags,
             featured = :featured,
             category_id = :category_id,
-            sku = :sku,
+            original_code = :original_code,
+            manufacturer_code = :manufacturer_code,
             availability = :availability
             WHERE id = :id";
 
@@ -131,7 +129,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'tags' => $tags,
                     'featured' => $featured,
                     'category_id' => $category_id,
-                    'sku' => $sku,
+                    'original_code' => $original_code,
+                    'manufacturer_code' => $manufacturer_code,
                     'availability' => $availability,
                     'id' => $id
                 ]);
@@ -182,14 +181,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="form-group">
-                <label for="sku">SKU</label>
-                <input type="text" id="sku" name="sku"
-                    value="<?= htmlspecialchars($product['sku'] ?? '') ?>">
-                <small>Código único do produto</small>
+                <label for="original_code">Código Original</label>
+                <input type="text" id="original_code" name="original_code"
+                    value="<?= htmlspecialchars($product['original_code'] ?? '') ?>">
+                <small>Código original do fabricante do veículo</small>
             </div>
         </div>
 
         <div class="form-row">
+            <div class="form-group">
+                <label for="manufacturer_code">Código Fabricante</label>
+                <input type="text" id="manufacturer_code" name="manufacturer_code"
+                    value="<?= htmlspecialchars($product['manufacturer_code'] ?? '') ?>">
+                <small>Código do fabricante da peça</small>
+            </div>
+
             <div class="form-group">
                 <label for="category_id">Categoria</label>
                 <select id="category_id" name="category_id">
@@ -201,7 +207,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php endforeach; ?>
                 </select>
             </div>
+        </div>
 
+        <div class="form-row">
             <div class="form-group">
                 <label for="tags">Tags</label>
                 <input type="text" id="tags" name="tags"
@@ -222,28 +230,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <textarea id="content" name="content" rows="10"><?= htmlspecialchars($product['content']) ?></textarea>
             <small>Descrição detalhada do produto, especificações, compatibilidade, etc.</small>
         </div>
-
-        <!-- <div class="form-row">
-            <div class="form-group">
-                <label for="price">Preço *</label>
-                <div class="input-prefix">
-                    <span class="prefix">R$</span>
-                    <input type="text" id="price" name="price" required
-                        value="<?= number_format($product['price'], 2, ',', '.') ?>">
-                </div>
-                <small>Use vírgula como separador decimal (Ex: 199,90)</small>
-            </div>
-
-            <div class="form-group">
-                <label for="sale_price">Preço Promocional</label>
-                <div class="input-prefix">
-                    <span class="prefix">R$</span>
-                    <input type="text" id="sale_price" name="sale_price"
-                        value="<?= $product['sale_price'] ? number_format($product['sale_price'], 2, ',', '.') : '' ?>">
-                </div>
-                <small>Deixe em branco se não houver desconto</small>
-            </div>
-        </div> -->
 
         <div class="form-group">
             <label for="main_picture">Imagem do Produto</label>
