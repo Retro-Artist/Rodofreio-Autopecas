@@ -225,7 +225,7 @@ try {
                                 </td>
                                 <td>
                                     <span class="whatsapp-badge">
-                                        <i class="fab fa-whatsapp"></i> Compra pelo WhatsApp
+                                     Ativo
                                     </span>
                                 </td>
                                 <td>

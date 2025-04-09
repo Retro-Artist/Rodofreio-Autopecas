@@ -45,7 +45,8 @@ $formatted_date = $published_date->format('d/m/Y');
 $related_products = [];
 if (!empty($product['category_id'])) {
     try {
-        $related_query = "SELECT p.id, p.title, p.slug, p.main_picture, p.description, p.availability, p.featured
+        $related_query = "SELECT p.id, p.title, p.slug, p.main_picture, p.description, 
+                          p.availability, p.featured, p.original_code, p.manufacturer_code
                          FROM posts p
                          WHERE p.id != :product_id 
                          AND p.category_id = :category_id
@@ -103,29 +104,13 @@ if (!empty($product['category_id'])) {
                                 alt="<?= htmlspecialchars($product['title']) ?>" id="main-product-image">
                         <?php endif; ?>
                     </div>
-
-                    <!-- Thumbnails (only show if main picture exists) -->
-                    <?php if (!empty($product['main_picture'])): ?>
-                        <div class="product-thumbnails">
-                            <div class="thumbnail active" data-image="<?= UPLOADS_URL . $product['main_picture'] ?>">
-                                <img src="<?= UPLOADS_URL . $product['main_picture'] ?>" alt="Thumbnail 1">
-                            </div>
-                            <div class="thumbnail" data-image="<?= UPLOADS_URL . $product['main_picture'] ?>">
-                                <img src="<?= UPLOADS_URL . $product['main_picture'] ?>" alt="Thumbnail 2">
-                            </div>
-                            <div class="thumbnail" data-image="<?= UPLOADS_URL . $product['main_picture'] ?>">
-                                <img src="<?= UPLOADS_URL . $product['main_picture'] ?>" alt="Thumbnail 3">
-                            </div>
-                        </div>
-                    <?php endif; ?>
+                    <!-- Removed thumbnails section -->
                 </div>
 
                 <div class="product-details">
                     <h1 class="product-title"><?= htmlspecialchars($product['title']) ?></h1>
 
                     <div class="product-meta">
-       
-
                         <?php if (!empty($product['category_name'])): ?>
                             <div class="product-category">
                                 Categoria:
@@ -148,6 +133,16 @@ if (!empty($product['category_id'])) {
                                     endif;
                                 endforeach;
                                 ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                    
+                    <!-- Display product codes -->
+                    <div class="product-codes">
+                        <?php if (!empty($product['original_code'])): ?>
+                            <div class="product-code">
+                                <span class="code-label">COD:</span>
+                                <span class="code-value"><?= htmlspecialchars($product['original_code']) ?></span>
                             </div>
                         <?php endif; ?>
                     </div>
@@ -178,7 +173,9 @@ if (!empty($product['category_id'])) {
                             <i class="fas fa-shopping-cart"></i> Adicionar ao Carrinho
                         </button>
 
-                        <a href="<?= getWhatsAppUrl(WHATSAPP_NUMBER, 'Olá, tenho interesse no produto: ' . $product['title'] ) ?>"
+                        <a href="<?= getWhatsAppUrl(WHATSAPP_NUMBER, 'Olá, tenho interesse no produto: ' . $product['title'] . 
+                            (!empty($product['original_code']) ? ' (Código Original: ' . $product['original_code'] . ')' : '') .
+                            (!empty($product['manufacturer_code']) ? ' (Código Fabricante: ' . $product['manufacturer_code'] . ')' : '')) ?>"
                             class="whatsapp-button" target="_blank">
                             <i class="fab fa-whatsapp"></i> Compre agora pelo WhatsApp
                         </a>
@@ -205,10 +202,10 @@ if (!empty($product['category_id'])) {
                             $related_url = BASE_URL . '/produto/' . $related['slug'];
                         ?>
                             <div class="product-card"
-                                data-product-id="<?= $product['id'] ?>"
-                                data-product-name="<?= htmlspecialchars($product['title']) ?>"
-                                data-product-image="<?= !empty($product['main_picture']) ? UPLOADS_URL . $product['main_picture'] : IMAGES_URL . 'placeholder.webp' ?>"
-                                data-product-slug="<?= $product['slug'] ?>">
+                                data-product-id="<?= $related['id'] ?>"
+                                data-product-name="<?= htmlspecialchars($related['title']) ?>"
+                                data-product-image="<?= !empty($related['main_picture']) ? UPLOADS_URL . $related['main_picture'] : IMAGES_URL . 'placeholder.webp' ?>"
+                                data-product-slug="<?= $related['slug'] ?>">
                                 <!-- Full card clickable link -->
                                 <a href="<?= $related_url ?>" class="product-card-link" aria-label="Ver detalhes de <?= htmlspecialchars($related['title']) ?>"></a>
 
@@ -226,6 +223,26 @@ if (!empty($product['category_id'])) {
 
                                 <div class="product-info">
                                     <h3 class="product-title"><?= htmlspecialchars($related['title']) ?></h3>
+                                    
+                                    <!-- Display codes for related products -->
+                                    <?php if (!empty($related['original_code']) || !empty($related['manufacturer_code'])): ?>
+                                    <div class="product-codes-mini">
+                                        <?php if (!empty($related['original_code'])): ?>
+                                            <div class="product-code-mini">
+                                                <span class="code-label-mini">Código Original:</span>
+                                                <span class="code-value-mini"><?= htmlspecialchars($related['original_code']) ?></span>
+                                            </div>
+                                        <?php endif; ?>
+                                        
+                                        <?php if (!empty($related['manufacturer_code'])): ?>
+                                            <div class="product-code-mini">
+                                                <span class="code-label-mini">Código Fabricante:</span>
+                                                <span class="code-value-mini"><?= htmlspecialchars($related['manufacturer_code']) ?></span>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                    <?php endif; ?>
+                                    
                                     <div class="product-contact">
                                         <i class="fab fa-whatsapp"></i>
                                         <span>Compra pelo WhatsApp</span>
@@ -236,7 +253,10 @@ if (!empty($product['category_id'])) {
                                     <a href="<?= $related_url ?>" class="product-btn-secondary" onclick="event.stopPropagation();">
                                         <i class="fas fa-eye"></i> Ver Detalhes
                                     </a>
-                                    <a href="<?= getWhatsAppUrl(WHATSAPP_NUMBER, 'Olá, tenho interesse no produto: ' . $related['title']) ?>" target="_blank" class="product-btn-primary" onclick="event.stopPropagation();">
+                                    <a href="<?= getWhatsAppUrl(WHATSAPP_NUMBER, 'Olá, tenho interesse no produto: ' . $related['title'] . 
+                                        (!empty($related['original_code']) ? ' (Código Original: ' . $related['original_code'] . ')' : '') .
+                                        (!empty($related['manufacturer_code']) ? ' (Código Fabricante: ' . $related['manufacturer_code'] . ')' : '')) ?>" 
+                                        target="_blank" class="product-btn-primary" onclick="event.stopPropagation();">
                                         <i class="fas fa-shopping-cart"></i> Adicionar
                                     </a>
                                 </div>
@@ -248,6 +268,62 @@ if (!empty($product['category_id'])) {
         </main>
     </div>
 </div>
+
+<style>
+/* Product codes styling */
+.product-codes {
+    margin: 15px 0;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    border: 1px solid #e9ecef;
+}
+
+.product-code {
+    margin-bottom: 8px;
+}
+
+.product-code:last-child {
+    margin-bottom: 0;
+}
+
+.code-label {
+    font-weight: 600;
+    display: inline-block;
+    width: 140px;
+}
+
+.code-value {
+    font-family: monospace;
+    background-color: #fff;
+    padding: 2px 8px;
+    border-radius: 3px;
+    border: 1px solid #e9ecef;
+}
+
+/* Related product code styling */
+.product-codes-mini {
+    margin: 8px 0;
+    font-size: 0.85rem;
+}
+
+.product-code-mini {
+    margin-bottom: 4px;
+}
+
+.code-label-mini {
+    font-weight: 500;
+    color: #666;
+}
+
+.code-value-mini {
+    font-family: monospace;
+    background-color: #f8f9fa;
+    padding: 1px 4px;
+    border-radius: 2px;
+    font-size: 0.8rem;
+}
+</style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
