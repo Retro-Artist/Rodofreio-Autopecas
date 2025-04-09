@@ -176,6 +176,9 @@ try {
                         <div class="brand-item">
                             <img src="<?= IMAGES_URL ?>marca-08.png" alt="Marca Parceira">
                         </div>
+                        <div class="brand-item">
+                            <img src="<?= IMAGES_URL ?>marca-10.png" alt="Marca Parceira">
+                        </div>
                     </div>
                 </div>
             </section>
@@ -208,7 +211,7 @@ try {
                             </div>
                             <div class="benefit-content">
                                 <h3 class="benefit-content__title">Atendimento Personalizado</h3>
-                                <p class="benefit-content__description">Focamos nosso trabalho em um atendimento personalizado, proporcionando qualidade. Nossa oficina na reposição de peças automotivas com pontualidade, garantia e preços competitivos.</p>
+                                <p class="benefit-content__description">Focamos nosso trabalho em um atendimento personalizado, com pontualidade, garantia, reposição de peças e preços competitivos.</p>
                             </div>
                         </div>
 
@@ -227,8 +230,8 @@ try {
                                 <img src="<?= IMAGES_URL ?>icon-specialists.png" alt="Ícone de especialistas">
                             </div>
                             <div class="benefit-content">
-                                <h3 class="benefit-content__title">Mantemos um time de especialistas para melhor atendê-lo</h3>
-                                <p class="benefit-content__description">Nossa equipe de especialistas está sempre à disposição para oferecer orientações técnicas e ajudar você a encontrar a peça ideal para seu veículo.</p>
+                                <h3 class="benefit-content__title">Mantemos um time de vendas para melhor atendê-lo</h3>
+                                <p class="benefit-content__description">Nossa equipe de vendas está sempre à disposição para oferecer orientações técnicas e ajudar você a encontrar a peça ideal para seu veículo.</p>
                             </div>
                         </div>
                     </div>
@@ -408,8 +411,8 @@ try {
                             <button class="units-tabs__button units-tabs__button--active" data-target="loja01">Maringá - PR (Matriz)</button>
                             <button class="units-tabs__button" data-target="loja02">Maringá - PR</button>
                             <button class="units-tabs__button" data-target="loja03">Londrina - PR</button>
-                            <button class="units-tabs__button" data-target="loja04">Luís Eduardo - BA</button>
-                            <button class="units-tabs__button" data-target="loja08">L. Eduardo - BA (Boa Vista)</button>
+                            <button class="units-tabs__button" data-target="loja04">(1) Luís Eduardo - BA</button>
+                            <button class="units-tabs__button" data-target="loja08">(2) Luís Eduardo - BA</button>
                             <button class="units-tabs__button" data-target="loja11">Barreiras - BA</button>
                             <button class="units-tabs__button" data-target="loja09">Dourados - MS</button>
                             <button class="units-tabs__button" data-target="loja06">Rondonópolis - MT</button>
@@ -562,7 +565,7 @@ try {
                                     </iframe>
                                 </div>
                                 <div class="unit-info">
-                                    <h3 class="unit-info__title">LOJA 08 - Luís Eduardo Magalhães (Boa Vista)</h3>
+                                    <h3 class="unit-info__title">LOJA 08 - Luís Eduardo Magalhães</h3>
                                     <div class="unit-info__details">
                                         <div class="unit-info__item">
                                             <i class="fas fa-map-marker-alt"></i>

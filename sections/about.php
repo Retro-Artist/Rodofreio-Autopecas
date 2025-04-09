@@ -30,7 +30,7 @@
                         <div class="about-text-image">
                             <div class="about-text">
                                 <h2 class="about-content__title">Nossa História</h2>
-                                <p class="about-content__text">A Rodofreios foi fundada no ano de 1992 na cidade de Maringá, iniciou suas atividades com o nome de Ribeiro Auto Peças na Av. Colombo, hoje conta com 5 lojas nos estados do Paraná, Mato Grosso e Bahia, comercializando peças para motor, câmbio, diferencial, freios entre muitas outras para caminhões e carretas.</p>
+                                <p class="about-content__text">A Rodofreios foi fundada no ano de 1992 na cidade de Maringá, iniciou suas atividades com o nome de Ribeiro Auto Peças na Av. Colombo, hoje conta com mais de 10 lojas nos estados do Paraná, Bahia, Mato Grosso e Mato Grosso do Sul, comercializando peças para motor, câmbio, diferencial, freios entre muitas outras para caminhões e carretas.</p>
                                 
                                 <p class="about-content__text">Ao longo das últimas três décadas, nos consolidamos como uma das mais respeitadas empresas no segmento de autopeças para veículos pesados, fornecendo produtos de alta qualidade, atendimento especializado e suporte técnico diferenciado para nossos clientes.</p>
                                 

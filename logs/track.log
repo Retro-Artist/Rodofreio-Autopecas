@@ -1,6 +1,0 @@
-2025-04-04 11:15:53 - Received request
-2025-04-04 11:15:53 - Request body: {"product_id":"16","event_type":"cart_add"}
-2025-04-04 11:15:53 - Event recorded successfully: 39
-2025-04-04 11:15:54 - Received request
-2025-04-04 11:15:54 - Request body: {"product_id":"16","event_type":"cart_add"}
-2025-04-04 11:15:54 - Event recorded successfully: 40
