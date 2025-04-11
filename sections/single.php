@@ -31,13 +31,14 @@ try {
     }
 
     $availability = isset($product['availability']) ? $product['availability'] == 1 : true;
-    
+
     // Get additional images for the product
     $additional_images = [];
     try {
         $images_query = "SELECT * FROM product_images 
                          WHERE product_id = :product_id 
-                         ORDER BY display_order ASC";
+                         ORDER BY display_order ASC
+                         LIMIT 5"; // Limit to 5 additional images (6 total with main image)
         $images_stmt = $pdo->prepare($images_query);
         $images_stmt->execute(['product_id' => $product['id']]);
         $additional_images = $images_stmt->fetchAll();
@@ -45,11 +46,10 @@ try {
         error_log($e->getMessage());
         // Continue execution even if additional images fail to load
     }
-    
+
     // Log the results for debugging
     error_log('Product ID: ' . $product['id'] . ', Additional Images: ' . count($additional_images));
     error_log('Main Image: ' . ($product['main_picture'] ? $product['main_picture'] : 'None'));
-
 } catch (PDOException $e) {
     error_log($e->getMessage());
     include __DIR__ . '/404.php';
@@ -95,7 +95,7 @@ if (!empty($product['id'])) {
             'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null,
             'referrer' => $_SERVER['HTTP_REFERER'] ?? null
         ];
-        
+
         $track_query = "INSERT INTO product_events 
                        (product_id, event_type, user_ip, user_agent, referrer) 
                        VALUES (:product_id, :event_type, :user_ip, :user_agent, :referrer)";
@@ -137,7 +137,7 @@ if (!empty($product['id'])) {
                 data-manufacturer-code="<?= htmlspecialchars($product['manufacturer_code'] ?? '') ?>">
 
                 <div class="product-gallery">
-                    <!-- Main product image -->
+                    <!-- Main product image - Increased size -->
                     <div class="product-main-image">
                         <?php if (!empty($product['main_picture'])): ?>
                             <img src="<?= UPLOADS_URL . $product['main_picture'] ?>"
@@ -147,8 +147,8 @@ if (!empty($product['id'])) {
                                 alt="<?= htmlspecialchars($product['title']) ?>" id="main-product-image">
                         <?php endif; ?>
                     </div>
-                    
-                    <!-- Thumbnails gallery -->
+
+                    <!-- Thumbnails gallery - Limited to 6 total (main + 5 additional) -->
                     <?php
                     $has_thumbnails = (!empty($product['main_picture']) || !empty($additional_images));
                     if ($has_thumbnails):
@@ -157,16 +157,16 @@ if (!empty($product['id'])) {
                             <!-- Main image as first thumbnail -->
                             <?php if (!empty($product['main_picture'])): ?>
                                 <div class="thumbnail active" data-src="<?= UPLOADS_URL . $product['main_picture'] ?>">
-                                    <img src="<?= UPLOADS_URL . $product['main_picture'] ?>" 
-                                         alt="<?= htmlspecialchars($product['title']) ?> - Imagem principal">
+                                    <img src="<?= UPLOADS_URL . $product['main_picture'] ?>"
+                                        alt="<?= htmlspecialchars($product['title']) ?> - Imagem principal">
                                 </div>
                             <?php endif; ?>
-                            
-                            <!-- Additional images as thumbnails -->
+
+                            <!-- Additional images as thumbnails - Already limited to 5 by the SQL query -->
                             <?php foreach ($additional_images as $index => $image): ?>
                                 <div class="thumbnail" data-src="<?= UPLOADS_URL . $image['image_path'] ?>">
-                                    <img src="<?= UPLOADS_URL . $image['image_path'] ?>" 
-                                         alt="<?= htmlspecialchars($product['title']) ?> - Imagem <?= $index + 1 ?>">
+                                    <img src="<?= UPLOADS_URL . $image['image_path'] ?>"
+                                        alt="<?= htmlspecialchars($product['title']) ?> - Imagem <?= $index + 1 ?>">
                                 </div>
                             <?php endforeach; ?>
                         </div>
@@ -174,17 +174,34 @@ if (!empty($product['id'])) {
                 </div>
 
                 <div class="product-details">
-                    <h1 class="product-title"><?= htmlspecialchars($product['title']) ?></h1>
-                    
-                    <!-- Manufacturer code displayed in a minimal badge -->
-                    <?php if (!empty($product['manufacturer_code'])): ?>
-                        <div class="product-code-badge">
-                            <span class="code-value">Código: <?= htmlspecialchars($product['manufacturer_code']) ?></span>
-                        </div>
-                    <?php endif; ?>
 
-                    <!-- Category and tags in a more compact format -->
-                    <div class="product-meta">
+
+
+
+                    <h1 class="product-title"><?= htmlspecialchars($product['title']) ?></h1>
+
+
+                    <!-- Product description with better emphasis -->
+                    <div class="product-description">
+                        <p><?= htmlspecialchars($product['description']) ?></p>
+                    </div>
+
+                    <!-- Quantity selector -->
+                    <div class="product-quantity">
+                        <label for="product-quantity">Quantidade:</label>
+                        <div class="quantity-selector">
+                            <button type="button" class="quantity-btn decrease" id="decrease-quantity">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <input type="number" id="product-quantity" class="quantity-input" value="1" min="1" max="99">
+                            <button type="button" class="quantity-btn increase" id="increase-quantity">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                                        <!-- Category and tags in a more compact format -->
+                                        <div class="product-meta">
                         <?php if (!empty($product['category_name'])): ?>
                             <div class="product-category">
                                 <a href="<?= BASE_URL ?>/produtos/categoria/<?= urlencode($product['category_slug']) ?>" class="category-link">
@@ -208,36 +225,16 @@ if (!empty($product['id'])) {
                         <?php endif; ?>
                     </div>
 
-                    <!-- Product description with better emphasis -->
-                    <div class="product-description">
-                        <p><?= htmlspecialchars($product['description']) ?></p>
-                    </div>
-
-                    <!-- Availability status with improved visual -->
-                    <div class="product-availability">
-                        <?php if ($availability): ?>
-                            <span class="in-stock">
-                                <i class="fas fa-check-circle"></i> Em disponibilidade
-                            </span>
-                        <?php else: ?>
-                            <span class="out-of-stock">
-                                <i class="fas fa-times-circle"></i> Em falta
-                            </span>
-                        <?php endif; ?>
-                    </div>
-                    
-                    <!-- Quantity selector -->
-                    <div class="product-quantity">
-                        <label for="product-quantity">Quantidade:</label>
-                        <div class="quantity-selector">
-                            <button type="button" class="quantity-btn decrease" id="decrease-quantity">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <input type="number" id="product-quantity" class="quantity-input" value="1" min="1" max="99">
-                            <button type="button" class="quantity-btn increase" id="increase-quantity">
-                                <i class="fas fa-plus"></i>
-                            </button>
+                    <!-- Manufacturer code displayed in a minimal badge -->
+                    <?php if (!empty($product['manufacturer_code'])): ?>
+                        <div class="product-code-badge">
+                            <span class="code-value">Código de Fabricate: <?= htmlspecialchars($product['manufacturer_code']) ?></span>
                         </div>
+                    <?php endif; ?>
+
+                    <!-- Call-to-action note -->
+                    <div class="product-cta-note">
+                        <i class="fas fa-info-circle"></i> Consulte valores e disponibilidade pelo WhatsApp.
                     </div>
 
                     <!-- Product actions with improved styling -->
@@ -246,19 +243,16 @@ if (!empty($product['id'])) {
                             <i class="fas fa-shopping-cart"></i> Adicionar ao Carrinho
                         </button>
 
-                        <a href="<?= getWhatsAppUrl(WHATSAPP_NUMBER, 'Olá, tenho interesse no produto: ' . 
-                            (!empty($product['manufacturer_code']) ? '(Código Fabricante: ' . $product['manufacturer_code'] . ') ' : '') .
-                            $product['title'] . ' (1 Unidade)' . 
-                            '\n' . BASE_URL . '/produto/' . $product['slug']) ?>"
+                        <a href="<?= getWhatsAppUrl(WHATSAPP_NUMBER, 'Olá, tenho interesse no produto: ' .
+                                        (!empty($product['manufacturer_code']) ? '(Código Fabricante: ' . $product['manufacturer_code'] . ') ' : '') .
+                                        $product['title'] . ' (1 Unidade)' .
+                                        '\n' . BASE_URL . '/produto/' . $product['slug']) ?>"
                             class="whatsapp-button" target="_blank" id="whatsapp-btn">
                             <i class="fab fa-whatsapp"></i> Compre agora pelo WhatsApp
                         </a>
                     </div>
-                    
-                    <!-- Call-to-action note -->
-                    <div class="product-cta-note">
-                        <i class="fas fa-info-circle"></i> Consulte valores e disponibilidade pelo WhatsApp.
-                    </div>
+
+
                 </div>
             </div>
 
@@ -286,7 +280,7 @@ if (!empty($product['id'])) {
                                 data-product-image="<?= !empty($related['main_picture']) ? UPLOADS_URL . $related['main_picture'] : IMAGES_URL . 'placeholder.webp' ?>"
                                 data-product-slug="<?= $related['slug'] ?>"
                                 data-manufacturer-code="<?= htmlspecialchars($related['manufacturer_code'] ?? '') ?>">
-                                
+
                                 <!-- Full card clickable link -->
                                 <a href="<?= $related_url ?>" class="product-card-link" aria-label="Ver detalhes de <?= htmlspecialchars($related['title']) ?>"></a>
 
@@ -304,14 +298,14 @@ if (!empty($product['id'])) {
 
                                 <div class="product-info">
                                     <h3 class="product-title"><?= htmlspecialchars($related['title']) ?></h3>
-                                    
+
                                     <!-- Display manufacturer code in minimal format for related products -->
                                     <?php if (!empty($related['manufacturer_code'])): ?>
                                         <div class="product-code-mini">
                                             Código: <?= htmlspecialchars($related['manufacturer_code']) ?>
                                         </div>
                                     <?php endif; ?>
-                                    
+
                                     <div class="product-contact">
                                         <i class="fab fa-whatsapp"></i>
                                         <span>Compra pelo WhatsApp</span>
@@ -340,7 +334,7 @@ if (!empty($product['id'])) {
         // Image gallery functionality
         const mainImage = document.getElementById('main-product-image');
         const thumbnails = document.querySelectorAll('.thumbnail');
-        
+
         // Set up thumbnail click handlers
         if (thumbnails.length > 0 && mainImage) {
             thumbnails.forEach(thumbnail => {
@@ -349,7 +343,7 @@ if (!empty($product['id'])) {
                     const imgSrc = this.getAttribute('data-src');
                     if (imgSrc) {
                         mainImage.src = imgSrc;
-                        
+
                         // Update active state
                         thumbnails.forEach(thumb => thumb.classList.remove('active'));
                         this.classList.add('active');
@@ -357,12 +351,12 @@ if (!empty($product['id'])) {
                 });
             });
         }
-        
+
         // Quantity selector functionality
         const quantityInput = document.getElementById('product-quantity');
         const decreaseBtn = document.getElementById('decrease-quantity');
         const increaseBtn = document.getElementById('increase-quantity');
-        
+
         if (quantityInput && decreaseBtn && increaseBtn) {
             decreaseBtn.addEventListener('click', function() {
                 const currentValue = parseInt(quantityInput.value);
@@ -371,7 +365,7 @@ if (!empty($product['id'])) {
                     updateWhatsAppLink();
                 }
             });
-            
+
             increaseBtn.addEventListener('click', function() {
                 const currentValue = parseInt(quantityInput.value);
                 if (currentValue < 99) {
@@ -379,7 +373,7 @@ if (!empty($product['id'])) {
                     updateWhatsAppLink();
                 }
             });
-            
+
             quantityInput.addEventListener('change', function() {
                 let value = parseInt(this.value);
                 if (isNaN(value) || value < 1) {
@@ -390,38 +384,38 @@ if (!empty($product['id'])) {
                 this.value = value;
                 updateWhatsAppLink();
             });
-            
+
             // Update WhatsApp link with current quantity
             function updateWhatsAppLink() {
                 const quantity = parseInt(quantityInput.value);
                 const whatsappBtn = document.getElementById('whatsapp-btn');
-                
+
                 if (whatsappBtn && quantity > 0) {
                     const productContainer = document.querySelector('.product-container');
                     if (!productContainer) return;
-                    
+
                     const productId = productContainer.dataset.productId;
                     const productName = productContainer.dataset.productName;
                     const productSlug = productContainer.dataset.productSlug;
                     const manufacturerCode = productContainer.dataset.manufacturerCode || '';
-                    
+
                     const baseUrl = window.location.origin;
                     const productUrl = `${baseUrl}/produto/${productSlug}`;
-                    
+
                     const qtyText = `(${quantity} ${quantity === 1 ? 'Unidade' : 'Unidades'})`;
                     let messageText = `Olá, tenho interesse no produto: `;
-                    
+
                     if (manufacturerCode) {
                         messageText += `(Código Fabricante: ${manufacturerCode}) `;
                     }
-                    
+
                     messageText += `${productName} ${qtyText}\n${productUrl}`;
-                    
+
                     // Update the href attribute
                     whatsappBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(messageText)}`;
                 }
             }
-            
+
             // Custom Add to Cart button functionality with quantity
             const addToCartBtn = document.getElementById('add-to-cart-custom');
             if (addToCartBtn) {
@@ -429,13 +423,13 @@ if (!empty($product['id'])) {
                     const quantity = parseInt(quantityInput.value);
                     const productContainer = document.querySelector('.product-container');
                     if (!quantity > 0 || !productContainer) return;
-                    
+
                     const productId = productContainer.dataset.productId;
                     const productName = productContainer.dataset.productName;
                     const productImage = productContainer.dataset.productImage;
                     const productSlug = productContainer.dataset.productSlug;
                     const manufacturerCode = productContainer.dataset.manufacturerCode || '';
-                    
+
                     // Call the global addToCart function from cart.js
                     if (typeof window.addToCart === 'function') {
                         window.addToCart({
@@ -446,7 +440,7 @@ if (!empty($product['id'])) {
                             quantity: quantity,
                             manufacturerCode: manufacturerCode
                         });
-                        
+
                         // Show notification using the global function
                         if (typeof window.showNotification === 'function') {
                             window.showNotification(`${quantity} ${quantity === 1 ? 'unidade' : 'unidades'} adicionada${quantity === 1 ? '' : 's'} ao carrinho!`);
@@ -464,7 +458,7 @@ if (!empty($product['id'])) {
                 });
             }
         }
-        
+
         // WhatsApp button tracking
         const whatsappBtn = document.getElementById('whatsapp-btn');
         if (whatsappBtn) {
@@ -476,22 +470,22 @@ if (!empty($product['id'])) {
                 }
             });
         }
-        
+
         // Track event function - direct implementation for when window.trackEvent is not available
         function trackEvent(productId, eventType) {
             fetch(window.location.origin + '/includes/track.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    product_id: productId,
-                    event_type: eventType
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        product_id: productId,
+                        event_type: eventType
+                    })
                 })
-            })
-            .catch(error => {
-                console.error('Error tracking event:', error);
-            });
+                .catch(error => {
+                    console.error('Error tracking event:', error);
+                });
         }
     });
 </script>
