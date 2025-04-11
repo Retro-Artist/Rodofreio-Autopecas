@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $manufacturer_code = trim($_POST['manufacturer_code'] ?? '');
     $slug = createSlug($title);
 
-    // Handle main image upload
+    // Handle main image upload with image compression
     $mainPicture = null;
     if (isset($_FILES['main_picture']) && $_FILES['main_picture']['error'] === UPLOAD_ERR_OK) {
         $uploadDir = __DIR__ . '/../../uploads/';
@@ -44,11 +44,87 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $fileName = uniqid('product_') . '.' . $fileExtension;
             $uploadFile = $uploadDir . $fileName;
 
-            if (move_uploaded_file($_FILES['main_picture']['tmp_name'], $uploadFile)) {
-                $mainPicture = $fileName;
+            // Apply image compression based on file type
+            $sourceImage = null;
+            $targetWidth = 1200; // Maximum width for product images
+            $quality = 85; // Compression quality (0-100)
+
+            switch ($fileExtension) {
+                case 'jpg':
+                case 'jpeg':
+                    $sourceImage = imagecreatefromjpeg($_FILES['main_picture']['tmp_name']);
+                    break;
+                case 'png':
+                    $sourceImage = imagecreatefrompng($_FILES['main_picture']['tmp_name']);
+                    break;
+                case 'gif':
+                    $sourceImage = imagecreatefromgif($_FILES['main_picture']['tmp_name']);
+                    break;
+            }
+
+            if ($sourceImage) {
+                // Get original dimensions
+                $width = imagesx($sourceImage);
+                $height = imagesy($sourceImage);
+
+                // Calculate new dimensions if needed
+                if ($width > $targetWidth) {
+                    $ratio = $height / $width;
+                    $newWidth = $targetWidth;
+                    $newHeight = $targetWidth * $ratio;
+
+                    // Create a new image with the calculated dimensions
+                    $newImage = imagecreatetruecolor($newWidth, $newHeight);
+
+                    // Handle transparency for PNG images
+                    if ($fileExtension === 'png') {
+                        imagealphablending($newImage, false);
+                        imagesavealpha($newImage, true);
+                        $transparent = imagecolorallocatealpha($newImage, 255, 255, 255, 127);
+                        imagefilledrectangle($newImage, 0, 0, $newWidth, $newHeight, $transparent);
+                    }
+
+                    // Resize the image
+                    imagecopyresampled($newImage, $sourceImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+
+                    // Save the resized image
+                    switch ($fileExtension) {
+                        case 'jpg':
+                        case 'jpeg':
+                            imagejpeg($newImage, $uploadFile, $quality);
+                            break;
+                        case 'png':
+                            // PNG quality is 0-9, convert from 0-100
+                            $pngQuality = 9 - round(($quality / 100) * 9);
+                            imagepng($newImage, $uploadFile, $pngQuality);
+                            break;
+                        case 'gif':
+                            imagegif($newImage, $uploadFile);
+                            break;
+                    }
+
+                    // Free up memory
+                    imagedestroy($newImage);
+                    imagedestroy($sourceImage);
+                    
+                    $mainPicture = $fileName;
+                } else {
+                    // If the image is already smaller than our target width, just copy it
+                    if (move_uploaded_file($_FILES['main_picture']['tmp_name'], $uploadFile)) {
+                        $mainPicture = $fileName;
+                    } else {
+                        $message = 'Erro ao fazer upload do arquivo.';
+                        $messageClass = 'error';
+                    }
+                }
             } else {
-                $message = 'Erro ao fazer upload do arquivo.';
-                $messageClass = 'error';
+                // Fallback to direct upload without compression
+                if (move_uploaded_file($_FILES['main_picture']['tmp_name'], $uploadFile)) {
+                    $mainPicture = $fileName;
+                } else {
+                    $message = 'Erro ao fazer upload do arquivo.';
+                    $messageClass = 'error';
+                }
             }
         }
     }
@@ -103,10 +179,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Obter o ID do produto recém-inserido
                 $new_product_id = $pdo->lastInsertId();
 
-                // Handle additional images if present
+                // Handle additional images if present (limited to 5)
                 if (!empty($_FILES['additional_images']['name'][0])) {
                     $additionalImages = $_FILES['additional_images'];
                     $imageCount = count($additionalImages['name']);
+                    $maxAdditionalImages = 5; // Maximum 5 additional images (plus 1 main = 6 total)
+                    
+                    // Limit the number of images to process
+                    $imageCount = min($imageCount, $maxAdditionalImages);
+                    
+                    $uploadDir = __DIR__ . '/../../uploads/';
+                    $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
                     
                     // Insert query for additional images
                     $imageQuery = "INSERT INTO product_images (product_id, image_path, display_order) VALUES (?, ?, ?)";
@@ -120,9 +203,84 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 $fileName = uniqid('product_additional_') . '.' . $fileExtension;
                                 $uploadFile = $uploadDir . $fileName;
                                 
-                                if (move_uploaded_file($additionalImages['tmp_name'][$i], $uploadFile)) {
-                                    // Insert into product_images table
-                                    $imageStmt->execute([$new_product_id, $fileName, $i + 1]);
+                                // Apply image compression for additional images
+                                $sourceImage = null;
+                                $targetWidth = 1200; // Same settings as main image
+                                $quality = 85;
+                                
+                                switch ($fileExtension) {
+                                    case 'jpg':
+                                    case 'jpeg':
+                                        $sourceImage = imagecreatefromjpeg($additionalImages['tmp_name'][$i]);
+                                        break;
+                                    case 'png':
+                                        $sourceImage = imagecreatefrompng($additionalImages['tmp_name'][$i]);
+                                        break;
+                                    case 'gif':
+                                        $sourceImage = imagecreatefromgif($additionalImages['tmp_name'][$i]);
+                                        break;
+                                }
+                                
+                                if ($sourceImage) {
+                                    // Get original dimensions
+                                    $width = imagesx($sourceImage);
+                                    $height = imagesy($sourceImage);
+                                    
+                                    // Calculate new dimensions if needed
+                                    if ($width > $targetWidth) {
+                                        $ratio = $height / $width;
+                                        $newWidth = $targetWidth;
+                                        $newHeight = $targetWidth * $ratio;
+                                        
+                                        // Create a new image with the calculated dimensions
+                                        $newImage = imagecreatetruecolor($newWidth, $newHeight);
+                                        
+                                        // Handle transparency for PNG images
+                                        if ($fileExtension === 'png') {
+                                            imagealphablending($newImage, false);
+                                            imagesavealpha($newImage, true);
+                                            $transparent = imagecolorallocatealpha($newImage, 255, 255, 255, 127);
+                                            imagefilledrectangle($newImage, 0, 0, $newWidth, $newHeight, $transparent);
+                                        }
+                                        
+                                        // Resize the image
+                                        imagecopyresampled($newImage, $sourceImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+                                        
+                                        // Save the resized image
+                                        switch ($fileExtension) {
+                                            case 'jpg':
+                                            case 'jpeg':
+                                                imagejpeg($newImage, $uploadFile, $quality);
+                                                break;
+                                            case 'png':
+                                                // PNG quality is 0-9, convert from 0-100
+                                                $pngQuality = 9 - round(($quality / 100) * 9);
+                                                imagepng($newImage, $uploadFile, $pngQuality);
+                                                break;
+                                            case 'gif':
+                                                imagegif($newImage, $uploadFile);
+                                                break;
+                                        }
+                                        
+                                        // Free up memory
+                                        imagedestroy($newImage);
+                                        imagedestroy($sourceImage);
+                                        
+                                        // Insert into product_images table
+                                        $imageStmt->execute([$new_product_id, $fileName, $i + 1]);
+                                    } else {
+                                        // If the image is already smaller than our target width, just copy it
+                                        if (move_uploaded_file($additionalImages['tmp_name'][$i], $uploadFile)) {
+                                            // Insert into product_images table
+                                            $imageStmt->execute([$new_product_id, $fileName, $i + 1]);
+                                        }
+                                    }
+                                } else {
+                                    // Fallback to direct upload without compression
+                                    if (move_uploaded_file($additionalImages['tmp_name'][$i], $uploadFile)) {
+                                        // Insert into product_images table
+                                        $imageStmt->execute([$new_product_id, $fileName, $i + 1]);
+                                    }
                                 }
                             }
                         }
@@ -231,21 +389,21 @@ if ($redirect) {
         <div class="form-group">
             <label for="main_picture">Imagem Principal *</label>
             <input type="file" id="main_picture" name="main_picture" accept="image/*">
-            <small>Formatos suportados: JPG, PNG, GIF. Esta imagem será usada como miniatura nas listagens.</small>
+            <small>Formatos suportados: JPG, PNG, GIF. Esta imagem será usada como miniatura nas listagens. Imagens serão otimizadas automaticamente.</small>
         </div>
 
         <div class="form-group">
-            <label for="additional_images">Imagens Adicionais</label>
+            <label for="additional_images">Imagens Adicionais (Máximo 5)</label>
             <input type="file" id="additional_images" name="additional_images[]" accept="image/*" multiple>
-            <small>Você pode selecionar várias imagens adicionais para o produto. Formatos suportados: JPG, PNG, GIF.</small>
+            <small>Você pode selecionar até 5 imagens adicionais para o produto. Limite total de 6 imagens por produto (1 principal + 5 adicionais). Formatos suportados: JPG, PNG, GIF.</small>
             <div id="image-preview" class="image-preview-container"></div>
         </div>
 
         <div class="form-row">
             <div class="form-group checkbox-group">
                 <input type="checkbox" id="featured" name="featured" value="1" <?= isset($_POST['featured']) ? 'checked' : '' ?>>
-                <label for="featured">Produto em Destaque</label>
-                <small>Produtos em destaque aparecem na página inicial</small>
+                <label for="featured">Produto em Oferta</label>
+                <small>Produtos em oferta aparecem na página inicial</small>
             </div>
 
             <div class="form-group checkbox-group">
@@ -275,48 +433,6 @@ if ($redirect) {
     </form>
 </div>
 
-<style>
-/* Image preview styles */
-.image-preview-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.image-preview {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    position: relative;
-}
-
-.image-preview img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 4px;
-}
-
-.image-preview .remove-image {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    background-color: #dc3545;
-    color: white;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 10px;
-}
-</style>
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Image preview for additional images
@@ -326,6 +442,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (additionalImagesInput && imagePreviewContainer) {
         additionalImagesInput.addEventListener('change', function() {
             imagePreviewContainer.innerHTML = '';
+            
+            // Enforce the limit of 5 additional images
+            if (this.files.length > 5) {
+                alert('Você pode selecionar no máximo 5 imagens adicionais.');
+                // Clear the input to force user to select again with proper limit
+                this.value = '';
+                return;
+            }
             
             if (this.files) {
                 for (let i = 0; i < this.files.length; i++) {

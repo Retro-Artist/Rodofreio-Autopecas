@@ -12,12 +12,6 @@ $availableSettings = [
         'type' => 'text',
         'validation' => 'whatsapp'
     ],
-    'SITE_NAME' => [
-        'title' => 'Nome do Site',
-        'description' => 'Nome principal do site exibido em várias partes do sistema',
-        'type' => 'text',
-        'validation' => 'required'
-    ]
 ];
 
 // Get current settings from config file
@@ -75,13 +69,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
             
             // Write the updated content
             if (file_put_contents($configFilePath, $updatedContent)) {
-                $message = 'Configurações atualizadas com sucesso!';
+                $message = 'Configurações atualizadas com sucesso, atualize a página para ver as mudanças';
                 $messageClass = 'success';
                 
-                // Update constants in current request
+                // Instead of trying to redefine constants, update existing variables
+                // to use in this page's context (we don't redefine constants)
                 foreach ($newSettings as $key => $value) {
-                    define($key, $value);
+                    if ($key === 'WHATSAPP_NUMBER') {
+                        $WHATSAPP_NUMBER = $value;
+                    } elseif ($key === 'SITE_NAME') {
+                        $SITE_NAME = $value;
+                    }
                 }
+
             } else {
                 $message = 'Erro ao salvar as configurações. Verifique as permissões do arquivo.';
                 $messageClass = 'error';

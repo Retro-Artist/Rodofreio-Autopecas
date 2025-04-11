@@ -174,12 +174,20 @@ if (!empty($product['id'])) {
                 </div>
 
                 <div class="product-details">
-
-
-
-
                     <h1 class="product-title"><?= htmlspecialchars($product['title']) ?></h1>
 
+                    <!-- Availability status with improved visual -->
+                    <div class="product-availability">
+                        <?php if ($availability): ?>
+                            <span class="in-stock">
+                                <i class="fas fa-check-circle"></i> Em disponibilidade
+                            </span>
+                        <?php else: ?>
+                            <span class="out-of-stock">
+                                <i class="fas fa-times-circle"></i> Em falta
+                            </span>
+                        <?php endif; ?>
+                    </div>
 
                     <!-- Product description with better emphasis -->
                     <div class="product-description">
@@ -200,8 +208,8 @@ if (!empty($product['id'])) {
                         </div>
                     </div>
 
-                                        <!-- Category and tags in a more compact format -->
-                                        <div class="product-meta">
+                    <!-- Category and tags in a more compact format -->
+                    <div class="product-meta">
                         <?php if (!empty($product['category_name'])): ?>
                             <div class="product-category">
                                 <a href="<?= BASE_URL ?>/produtos/categoria/<?= urlencode($product['category_slug']) ?>" class="category-link">
@@ -251,8 +259,6 @@ if (!empty($product['id'])) {
                             <i class="fab fa-whatsapp"></i> Compre agora pelo WhatsApp
                         </a>
                     </div>
-
-
                 </div>
             </div>
 
