@@ -45,6 +45,11 @@ try {
         error_log($e->getMessage());
         // Continue execution even if additional images fail to load
     }
+    
+    // Log the results for debugging
+    error_log('Product ID: ' . $product['id'] . ', Additional Images: ' . count($additional_images));
+    error_log('Main Image: ' . ($product['main_picture'] ? $product['main_picture'] : 'None'));
+
 } catch (PDOException $e) {
     error_log($e->getMessage());
     include __DIR__ . '/404.php';
@@ -77,6 +82,28 @@ if (!empty($product['category_id'])) {
     } catch (PDOException $e) {
         error_log($e->getMessage());
         // Continue execution even if related products fail
+    }
+}
+
+// Track the product view
+if (!empty($product['id'])) {
+    try {
+        $track_data = [
+            'product_id' => $product['id'],
+            'event_type' => 'view',
+            'user_ip' => $_SERVER['REMOTE_ADDR'] ?? null,
+            'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null,
+            'referrer' => $_SERVER['HTTP_REFERER'] ?? null
+        ];
+        
+        $track_query = "INSERT INTO product_events 
+                       (product_id, event_type, user_ip, user_agent, referrer) 
+                       VALUES (:product_id, :event_type, :user_ip, :user_agent, :referrer)";
+        $track_stmt = $pdo->prepare($track_query);
+        $track_stmt->execute($track_data);
+    } catch (PDOException $e) {
+        error_log('Error tracking product view: ' . $e->getMessage());
+        // Continue execution even if tracking fails
     }
 }
 ?>
@@ -122,7 +149,10 @@ if (!empty($product['category_id'])) {
                     </div>
                     
                     <!-- Thumbnails gallery -->
-                    <?php if (!empty($product['main_picture']) || !empty($additional_images)): ?>
+                    <?php
+                    $has_thumbnails = (!empty($product['main_picture']) || !empty($additional_images));
+                    if ($has_thumbnails):
+                    ?>
                         <div class="product-thumbnails">
                             <!-- Main image as first thumbnail -->
                             <?php if (!empty($product['main_picture'])): ?>
@@ -292,11 +322,7 @@ if (!empty($product['category_id'])) {
                                     <a href="<?= $related_url ?>" class="product-btn-secondary" onclick="event.stopPropagation();">
                                         <i class="fas fa-eye"></i> Ver Detalhes
                                     </a>
-                                    <a href="<?= getWhatsAppUrl(WHATSAPP_NUMBER, 'Olá, tenho interesse no produto: ' . 
-                                        (!empty($related['manufacturer_code']) ? '(Código Fabricante: ' . $related['manufacturer_code'] . ') ' : '') .
-                                        $related['title'] . ' (1 Unidade)' . 
-                                        '\n' . BASE_URL . '/produto/' . $related['slug']) ?>" 
-                                        target="_blank" class="product-btn-primary" onclick="event.stopPropagation();">
+                                    <a href="#" class="product-btn-primary" onclick="event.preventDefault(); event.stopPropagation();">
                                         <i class="fas fa-shopping-cart"></i> Adicionar
                                     </a>
                                 </div>
@@ -755,149 +781,151 @@ if (!empty($product['category_id'])) {
                 thumbnail.addEventListener('click', function() {
                     // Update main image
                     const imgSrc = this.getAttribute('data-src');
-                    mainImage.src = imgSrc;
-                    
-                    // Update active state
-                    thumbnails.forEach(thumb => thumb.classList.remove('active'));
-                    this.classList.add('active');
+                    if (imgSrc) {
+                        mainImage.src = imgSrc;
+                        
+                        // Update active state
+                        thumbnails.forEach(thumb => thumb.classList.remove('active'));
+                        this.classList.add('active');
+                    }
                 });
             });
         }
         
-        // Track product view
-        const productContainer = document.querySelector('.product-container');
-        if (productContainer && productContainer.dataset.productId) {
-            // Function to track events
-            function trackEvent(productId, eventType) {
-                fetch(window.location.origin + '/includes/track.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        product_id: productId,
-                        event_type: eventType
-                    })
-                })
-                .catch(error => {
-                    console.error('Error tracking event:', error);
-                });
-            }
-
-            // Track product view
-            trackEvent(productContainer.dataset.productId, 'view');
-
-            // Add WhatsApp button tracking
-            const whatsappButton = document.querySelector('.whatsapp-button');
-            if (whatsappButton) {
-                whatsappButton.addEventListener('click', function() {
-                    trackEvent(productContainer.dataset.productId, 'whatsapp_click');
-                    console.log('WhatsApp click tracked for product:', productContainer.dataset.productId);
-                });
-            }
-            
-            // Quantity selector functionality
-            const quantityInput = document.getElementById('product-quantity');
-            const decreaseBtn = document.getElementById('decrease-quantity');
-            const increaseBtn = document.getElementById('increase-quantity');
-            
-            if (quantityInput && decreaseBtn && increaseBtn) {
-                decreaseBtn.addEventListener('click', function() {
-                    const currentValue = parseInt(quantityInput.value);
-                    if (currentValue > 1) {
-                        quantityInput.value = currentValue - 1;
-                        updateWhatsAppLink();
-                    }
-                });
-                
-                increaseBtn.addEventListener('click', function() {
-                    const currentValue = parseInt(quantityInput.value);
-                    if (currentValue < 99) {
-                        quantityInput.value = currentValue + 1;
-                        updateWhatsAppLink();
-                    }
-                });
-                
-                quantityInput.addEventListener('change', function() {
-                    let value = parseInt(this.value);
-                    if (isNaN(value) || value < 1) {
-                        value = 1;
-                    } else if (value > 99) {
-                        value = 99;
-                    }
-                    this.value = value;
+        // Quantity selector functionality
+        const quantityInput = document.getElementById('product-quantity');
+        const decreaseBtn = document.getElementById('decrease-quantity');
+        const increaseBtn = document.getElementById('increase-quantity');
+        
+        if (quantityInput && decreaseBtn && increaseBtn) {
+            decreaseBtn.addEventListener('click', function() {
+                const currentValue = parseInt(quantityInput.value);
+                if (currentValue > 1) {
+                    quantityInput.value = currentValue - 1;
                     updateWhatsAppLink();
-                });
-                
-                // Update WhatsApp link with current quantity
-                function updateWhatsAppLink() {
-                    const quantity = parseInt(quantityInput.value);
-                    const whatsappBtn = document.getElementById('whatsapp-btn');
-                    
-                    if (whatsappBtn && quantity > 0) {
-                        const productId = productContainer.dataset.productId;
-                        const productName = productContainer.dataset.productName;
-                        const productSlug = productContainer.dataset.productSlug;
-                        const manufacturerCode = productContainer.dataset.manufacturerCode || '';
-                        
-                        const baseUrl = window.location.origin;
-                        const productUrl = `${baseUrl}/produto/${productSlug}`;
-                        
-                        const qtyText = `(${quantity} ${quantity === 1 ? 'Unidade' : 'Unidades'})`;
-                        let messageText = `Olá, tenho interesse no produto: `;
-                        
-                        if (manufacturerCode) {
-                            messageText += `(Código Fabricante: ${manufacturerCode}) `;
-                        }
-                        
-                        messageText += `${productName} ${qtyText}\n${productUrl}`;
-                        
-                        // Update the href attribute
-                        whatsappBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(messageText)}`;
-                    }
                 }
+            });
+            
+            increaseBtn.addEventListener('click', function() {
+                const currentValue = parseInt(quantityInput.value);
+                if (currentValue < 99) {
+                    quantityInput.value = currentValue + 1;
+                    updateWhatsAppLink();
+                }
+            });
+            
+            quantityInput.addEventListener('change', function() {
+                let value = parseInt(this.value);
+                if (isNaN(value) || value < 1) {
+                    value = 1;
+                } else if (value > 99) {
+                    value = 99;
+                }
+                this.value = value;
+                updateWhatsAppLink();
+            });
+            
+            // Update WhatsApp link with current quantity
+            function updateWhatsAppLink() {
+                const quantity = parseInt(quantityInput.value);
+                const whatsappBtn = document.getElementById('whatsapp-btn');
                 
-                // Custom Add to Cart button functionality with quantity
-                const addToCartBtn = document.getElementById('add-to-cart-custom');
-                if (addToCartBtn) {
-                    addToCartBtn.addEventListener('click', function() {
-                        const quantity = parseInt(quantityInput.value);
-                        if (quantity > 0 && productContainer) {
-                            const productId = productContainer.dataset.productId;
-                            const productName = productContainer.dataset.productName;
-                            const productImage = productContainer.dataset.productImage;
-                            const productSlug = productContainer.dataset.productSlug;
-                            const manufacturerCode = productContainer.dataset.manufacturerCode || '';
-                            
-                            // Call the global addToCart function from cart.js
-                            if (typeof window.addToCart === 'function') {
-                                window.addToCart({
-                                    id: productId,
-                                    name: productName,
-                                    image: productImage,
-                                    slug: productSlug,
-                                    quantity: quantity,
-                                    manufacturerCode: manufacturerCode
-                                });
-                                
-                                // Show notification using the global function
-                                if (typeof window.showNotification === 'function') {
-                                    window.showNotification(`${quantity} ${quantity === 1 ? 'unidade' : 'unidades'} adicionada${quantity === 1 ? '' : 's'} ao carrinho!`);
-                                }
-                            } else {
-                                // Fallback if addToCart is not available globally
-                                console.log('Added to cart:', {
-                                    id: productId,
-                                    name: productName,
-                                    quantity: quantity,
-                                    manufacturerCode: manufacturerCode
-                                });
-                                alert(`${quantity} ${quantity === 1 ? 'unidade' : 'unidades'} adicionada${quantity === 1 ? '' : 's'} ao carrinho!`);
-                            }
-                        }
-                    });
+                if (whatsappBtn && quantity > 0) {
+                    const productContainer = document.querySelector('.product-container');
+                    if (!productContainer) return;
+                    
+                    const productId = productContainer.dataset.productId;
+                    const productName = productContainer.dataset.productName;
+                    const productSlug = productContainer.dataset.productSlug;
+                    const manufacturerCode = productContainer.dataset.manufacturerCode || '';
+                    
+                    const baseUrl = window.location.origin;
+                    const productUrl = `${baseUrl}/produto/${productSlug}`;
+                    
+                    const qtyText = `(${quantity} ${quantity === 1 ? 'Unidade' : 'Unidades'})`;
+                    let messageText = `Olá, tenho interesse no produto: `;
+                    
+                    if (manufacturerCode) {
+                        messageText += `(Código Fabricante: ${manufacturerCode}) `;
+                    }
+                    
+                    messageText += `${productName} ${qtyText}\n${productUrl}`;
+                    
+                    // Update the href attribute
+                    whatsappBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(messageText)}`;
                 }
             }
+            
+            // Custom Add to Cart button functionality with quantity
+            const addToCartBtn = document.getElementById('add-to-cart-custom');
+            if (addToCartBtn) {
+                addToCartBtn.addEventListener('click', function() {
+                    const quantity = parseInt(quantityInput.value);
+                    const productContainer = document.querySelector('.product-container');
+                    if (!quantity > 0 || !productContainer) return;
+                    
+                    const productId = productContainer.dataset.productId;
+                    const productName = productContainer.dataset.productName;
+                    const productImage = productContainer.dataset.productImage;
+                    const productSlug = productContainer.dataset.productSlug;
+                    const manufacturerCode = productContainer.dataset.manufacturerCode || '';
+                    
+                    // Call the global addToCart function from cart.js
+                    if (typeof window.addToCart === 'function') {
+                        window.addToCart({
+                            id: productId,
+                            name: productName,
+                            image: productImage,
+                            slug: productSlug,
+                            quantity: quantity,
+                            manufacturerCode: manufacturerCode
+                        });
+                        
+                        // Show notification using the global function
+                        if (typeof window.showNotification === 'function') {
+                            window.showNotification(`${quantity} ${quantity === 1 ? 'unidade' : 'unidades'} adicionada${quantity === 1 ? '' : 's'} ao carrinho!`);
+                        }
+                    } else {
+                        // Fallback if addToCart is not available globally
+                        console.log('Added to cart:', {
+                            id: productId,
+                            name: productName,
+                            quantity: quantity,
+                            manufacturerCode: manufacturerCode
+                        });
+                        alert(`${quantity} ${quantity === 1 ? 'unidade' : 'unidades'} adicionada${quantity === 1 ? '' : 's'} ao carrinho!`);
+                    }
+                });
+            }
+        }
+        
+        // WhatsApp button tracking
+        const whatsappBtn = document.getElementById('whatsapp-btn');
+        if (whatsappBtn) {
+            whatsappBtn.addEventListener('click', function() {
+                const productContainer = document.querySelector('.product-container');
+                if (productContainer && productContainer.dataset.productId) {
+                    // Track WhatsApp click event
+                    trackEvent(productContainer.dataset.productId, 'whatsapp_click');
+                }
+            });
+        }
+        
+        // Track event function - direct implementation for when window.trackEvent is not available
+        function trackEvent(productId, eventType) {
+            fetch(window.location.origin + '/includes/track.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    product_id: productId,
+                    event_type: eventType
+                })
+            })
+            .catch(error => {
+                console.error('Error tracking event:', error);
+            });
         }
     });
 </script>
