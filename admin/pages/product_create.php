@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $manufacturer_code = trim($_POST['manufacturer_code'] ?? '');
     $slug = createSlug($title);
 
-    // Handle file upload
+    // Handle main image upload
     $mainPicture = null;
     if (isset($_FILES['main_picture']) && $_FILES['main_picture']['error'] === UPLOAD_ERR_OK) {
         $uploadDir = __DIR__ . '/../../uploads/';
@@ -69,6 +69,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $message = "Produto \"" . htmlspecialchars($title) . "\" já existe. Por favor, use um nome diferente.";
                 $messageClass = 'error';
             } else {
+                // Begin transaction
+                $pdo->beginTransaction();
+
                 // Inserir produto
                 $query = "INSERT INTO posts (
                     title, content, description, main_picture, 
@@ -100,12 +103,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Obter o ID do produto recém-inserido
                 $new_product_id = $pdo->lastInsertId();
 
+                // Handle additional images if present
+                if (!empty($_FILES['additional_images']['name'][0])) {
+                    $additionalImages = $_FILES['additional_images'];
+                    $imageCount = count($additionalImages['name']);
+                    
+                    // Insert query for additional images
+                    $imageQuery = "INSERT INTO product_images (product_id, image_path, display_order) VALUES (?, ?, ?)";
+                    $imageStmt = $pdo->prepare($imageQuery);
+                    
+                    for ($i = 0; $i < $imageCount; $i++) {
+                        if ($additionalImages['error'][$i] === UPLOAD_ERR_OK) {
+                            $fileExtension = strtolower(pathinfo($additionalImages['name'][$i], PATHINFO_EXTENSION));
+                            
+                            if (in_array($fileExtension, $allowedTypes)) {
+                                $fileName = uniqid('product_additional_') . '.' . $fileExtension;
+                                $uploadFile = $uploadDir . $fileName;
+                                
+                                if (move_uploaded_file($additionalImages['tmp_name'][$i], $uploadFile)) {
+                                    // Insert into product_images table
+                                    $imageStmt->execute([$new_product_id, $fileName, $i + 1]);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Commit transaction
+                $pdo->commit();
+
                 // Em vez de redirecionar imediatamente, definimos uma flag
                 $redirect = true;
                 $message = 'Produto criado com sucesso!';
                 $messageClass = 'success';
             }
         } catch (PDOException $e) {
+            // Rollback in case of error
+            $pdo->rollBack();
+            
             // Se ainda assim ocorrer erro de duplicação (caso remoto)
             if ($e->getCode() == 23000 && strpos($e->getMessage(), 'Duplicate entry') !== false && strpos($e->getMessage(), 'posts.slug') !== false) {
                 $message = "Produto \"" . htmlspecialchars($title) . "\" já existe. Por favor, use um nome diferente.";
@@ -194,9 +229,16 @@ if ($redirect) {
         </div>
 
         <div class="form-group">
-            <label for="main_picture">Imagem do Produto</label>
+            <label for="main_picture">Imagem Principal *</label>
             <input type="file" id="main_picture" name="main_picture" accept="image/*">
-            <small>Formatos suportados: JPG, PNG, GIF</small>
+            <small>Formatos suportados: JPG, PNG, GIF. Esta imagem será usada como miniatura nas listagens.</small>
+        </div>
+
+        <div class="form-group">
+            <label for="additional_images">Imagens Adicionais</label>
+            <input type="file" id="additional_images" name="additional_images[]" accept="image/*" multiple>
+            <small>Você pode selecionar várias imagens adicionais para o produto. Formatos suportados: JPG, PNG, GIF.</small>
+            <div id="image-preview" class="image-preview-container"></div>
         </div>
 
         <div class="form-row">
@@ -232,3 +274,83 @@ if ($redirect) {
         </div>
     </form>
 </div>
+
+<style>
+/* Image preview styles */
+.image-preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.image-preview {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    position: relative;
+}
+
+.image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.image-preview .remove-image {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #dc3545;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 10px;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Image preview for additional images
+    const additionalImagesInput = document.getElementById('additional_images');
+    const imagePreviewContainer = document.getElementById('image-preview');
+    
+    if (additionalImagesInput && imagePreviewContainer) {
+        additionalImagesInput.addEventListener('change', function() {
+            imagePreviewContainer.innerHTML = '';
+            
+            if (this.files) {
+                for (let i = 0; i < this.files.length; i++) {
+                    const file = this.files[i];
+                    
+                    if (file.type.match('image.*')) {
+                        const reader = new FileReader();
+                        
+                        reader.onload = function(e) {
+                            const previewDiv = document.createElement('div');
+                            previewDiv.className = 'image-preview';
+                            
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.alt = 'Preview';
+                            
+                            previewDiv.appendChild(img);
+                            imagePreviewContainer.appendChild(previewDiv);
+                        }
+                        
+                        reader.readAsDataURL(file);
+                    }
+                }
+            }
+        });
+    }
+});
+</script>
