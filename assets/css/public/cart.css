@@ -171,6 +171,18 @@
   overflow: hidden;
 }
 
+/* Style for manufacturer code */
+.cart-item__code {
+  display: block;
+  font-size: 11px;
+  color: #666;
+  margin-bottom: 5px;
+  background: #f5f5f5;
+  padding: 2px 6px;
+  border-radius: 3px;
+  width: fit-content;
+}
+
 /* New style for the "Ver detalhes" link */
 .cart-item__view-details {
   display: inline-flex;

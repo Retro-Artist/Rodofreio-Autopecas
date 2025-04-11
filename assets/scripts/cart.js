@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const cartClearButton = document.getElementById('cart-clear');
     const cartCheckoutButton = document.getElementById('cart-checkout');
 
-    // Add to cart buttons
+    // Add to cart buttons (excluding the custom one from single.php)
     const addToCartButtons = document.querySelectorAll('.product-btn-primary');
 
     // Base URL for product links
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
         cartClearButton.addEventListener('click', clearCart);
     }
 
-    // No arquivo cart.js, modifique o trecho do checkout no carrinho:
+    // Checkout button handler with improved WhatsApp message format
     if (cartCheckoutButton) {
         cartCheckoutButton.addEventListener('click', function (e) {
             e.preventDefault();
@@ -86,13 +86,29 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Para dar tempo para registrar os eventos antes de abrir o WhatsApp
                 setTimeout(() => {
                     // Create WhatsApp message with cart items
-                    const cartText = cart.map(item =>
-                        `${item.name} (${item.quantity}x)`
-                    ).join('\n- ');
+                    const cartText = cart.map(item => {
+                        // Format the item quantity with proper units
+                        const qtyText = `(${item.quantity} ${item.quantity === 1 ? 'Unidade' : 'Unidades'})`;
+                        
+                        // Get product URL
+                        const productUrl = `${baseUrl}/produto/${item.slug}`;
+                        
+                        // Format the text with manufacturer code if available
+                        let itemText = `${item.name} ${qtyText}`;
+                        if (item.manufacturerCode) {
+                            itemText = `(Código Fabricante: ${item.manufacturerCode}) ${itemText}`;
+                        }
+                        
+                        // Add product URL on a new line
+                        itemText += `\n${productUrl}`;
+                        
+                        return itemText;
+                    }).join('\n- ');
 
                     const totalItems = getTotalItems();
+                    const itemText = totalItems === 1 ? 'item' : 'items';
 
-                    const message = `Olá, gostaria de finalizar a compra dos seguintes produtos:\n- ${cartText}\n\nTotal: ${totalItems} item(ns)`;
+                    const message = `Olá, tenho interesse no${cart.length > 1 ? 's' : ''} produto${cart.length > 1 ? 's' : ''}:\n- ${cartText}\n\nTotal: ${totalItems} ${itemText}`;
 
                     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
                 }, 300);
@@ -100,9 +116,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Add event listeners to all "Add to Cart" buttons
+    // Add event listeners to all "Add to Cart" buttons (excluding the custom one in single.php)
     if (addToCartButtons && addToCartButtons.length > 0) {
         addToCartButtons.forEach(button => {
+            // Skip if the button is the custom one from single.php
+            if (button.id === 'add-to-cart-custom') {
+                return;
+            }
+            
             button.addEventListener('click', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -115,6 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const productName = productCard.dataset.productName;
                 const productImage = productCard.dataset.productImage;
                 const productSlug = productCard.dataset.productSlug;
+                const manufacturerCode = productCard.dataset.manufacturerCode; // Get manufacturer code if available
 
                 // Validate required data
                 if (!productId || !productName || !productImage || !productSlug) {
@@ -129,7 +151,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     name: productName,
                     image: productImage,
                     slug: productSlug,
-                    quantity: 1
+                    quantity: 1,
+                    manufacturerCode: manufacturerCode // Add manufacturer code to cart item
                 });
 
                 // Show confirmation message
@@ -152,9 +175,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // If there's an "Add to Cart" button on the single product page
+    // For single product page "Add to Cart" button
+    // We're now handling this in the single.php file directly to avoid duplication
     const singleAddToCartButton = document.querySelector('.add-to-cart-button');
-    if (singleAddToCartButton) {
+    if (singleAddToCartButton && singleAddToCartButton.id !== 'add-to-cart-custom') {
         singleAddToCartButton.addEventListener('click', function () {
             const productContainer = this.closest('.product-container');
             if (!productContainer) return;
@@ -163,6 +187,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const productName = productContainer.dataset.productName;
             const productImage = productContainer.dataset.productImage;
             const productSlug = productContainer.dataset.productSlug;
+            const manufacturerCode = productContainer.dataset.manufacturerCode; // Get manufacturer code
 
             // Validate required data
             if (!productId || !productName || !productImage || !productSlug) {
@@ -171,12 +196,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
+            // Get quantity from input if available
+            let quantity = 1;
+            const quantityInput = document.getElementById('product-quantity');
+            if (quantityInput) {
+                quantity = parseInt(quantityInput.value) || 1;
+            }
+
             addToCart({
                 id: productId,
                 name: productName,
                 image: productImage,
                 slug: productSlug,
-                quantity: 1
+                quantity: quantity,
+                manufacturerCode: manufacturerCode // Include manufacturer code in cart item
             });
 
             showNotification('Produto adicionado ao carrinho!');
@@ -221,6 +254,10 @@ document.addEventListener('DOMContentLoaded', function () {
         if (existingProductIndex !== -1) {
             // Increment quantity if product already in cart
             cart[existingProductIndex].quantity += product.quantity;
+            // Make sure to preserve the manufacturer code
+            if (product.manufacturerCode && !cart[existingProductIndex].manufacturerCode) {
+                cart[existingProductIndex].manufacturerCode = product.manufacturerCode;
+            }
         } else {
             // Add new product to cart
             cart.push(product);
@@ -305,7 +342,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Update total - now showing number of items instead of price
         if (cartTotalValue) {
             const totalItems = getTotalItems();
-            // FIX: Changed 'itemns' to 'items' for plural case
+            // Fixed: Changed 'itemns' to 'items' for plural case
             cartTotalValue.textContent = `${totalItems} item${totalItems !== 1 ? 's' : ''}`;
         }
 
@@ -333,7 +370,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     // Construct product link
                     const productUrl = `${baseUrl}/produto/${item.slug}`;
 
-                    // New structure with details link
+                    // New structure with details link and manufacturer code if available
                     cartItemElement.innerHTML = `
                         <div class="cart-item__image">
                             <img src="${item.image}" alt="${item.name}">
@@ -341,6 +378,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <div class="cart-item__details">
                             <div class="cart-item__info">
                                 <h4 class="cart-item__name">${item.name}</h4>
+                                ${item.manufacturerCode ? `<small class="cart-item__code">Código: ${item.manufacturerCode}</small>` : ''}
                                 <a href="${productUrl}" class="cart-item__view-details" onclick="closeCart()">
                                     <i class="fas fa-eye"></i> Ver detalhes do produto
                                 </a>
@@ -469,6 +507,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 3000);
     }
 
-    // Make closeCart function available globally for links
+    // Make necessary functions available globally for use in product pages
     window.closeCart = closeCart;
+    window.addToCart = addToCart;
+    window.showNotification = showNotification;
+    window.trackEvent = trackEvent;
 });

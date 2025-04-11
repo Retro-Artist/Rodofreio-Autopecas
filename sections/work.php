@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['curriculum'])) {
     $phone = trim($_POST['phone'] ?? '');
     $position = trim($_POST['position'] ?? '');
     $curriculum = $_FILES['curriculum'] ?? null;
-    
+
     // Validação simples
     if (empty($name) || empty($email) || empty($curriculum['name'])) {
         $cvMessage = 'Por favor, preencha todos os campos obrigatórios.';
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['curriculum'])) {
 
             <!----------------------Careers (Trabalhe Conosco) Section---------------------->
             <section class="careers-section">
-                
+
                 <?php if ($cvMessage): ?>
                     <div class="message message--<?= $cvMessageClass ?>">
                         <div class="message__icon">
@@ -69,46 +69,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['curriculum'])) {
                         </div>
                     </div>
                 <?php endif; ?>
-                
+
                 <div class="careers-container">
                     <div class="careers-form-container">
                         <div class="careers-form__card">
                             <h3 class="careers-form__title">Envie seu Currículo</h3>
                             <p class="careers-form__text">Preencha o formulário abaixo e envie seu currículo. Ficaremos felizes em analisar seu perfil para nossas vagas.</p>
-                            
+
                             <form method="POST" enctype="multipart/form-data" class="careers-form">
                                 <div class="careers-form__row">
                                     <div class="careers-form__group">
                                         <label for="name" class="careers-form__label">Nome <span class="careers-form__required">*</span></label>
-                                        <input type="text" id="name" name="name" class="careers-form__input" required 
-                                               value="<?= htmlspecialchars($_POST['name'] ?? '') ?>"
-                                               placeholder="Seu nome completo">
+                                        <input type="text" id="name" name="name" class="careers-form__input" required
+                                            value="<?= htmlspecialchars($_POST['name'] ?? '') ?>"
+                                            placeholder="Seu nome completo">
                                     </div>
-                                    
+
                                     <div class="careers-form__group">
                                         <label for="email" class="careers-form__label">E-mail <span class="careers-form__required">*</span></label>
-                                        <input type="email" id="email" name="email" class="careers-form__input" required 
-                                               value="<?= htmlspecialchars($_POST['email'] ?? '') ?>"
-                                               placeholder="Seu endereço de e-mail">
+                                        <input type="email" id="email" name="email" class="careers-form__input" required
+                                            value="<?= htmlspecialchars($_POST['email'] ?? '') ?>"
+                                            placeholder="Seu endereço de e-mail">
                                     </div>
                                 </div>
-                                
+
                                 <div class="careers-form__row">
                                     <div class="careers-form__group">
                                         <label for="phone" class="careers-form__label">Telefone</label>
                                         <input type="tel" id="phone" name="phone" class="careers-form__input"
-                                               value="<?= htmlspecialchars($_POST['phone'] ?? '') ?>"
-                                               placeholder="(00) 00000-0000">
+                                            value="<?= htmlspecialchars($_POST['phone'] ?? '') ?>"
+                                            placeholder="(00) 00000-0000">
                                     </div>
-                                    
+
                                     <div class="careers-form__group">
                                         <label for="position" class="careers-form__label">Cargo desejado</label>
                                         <input type="text" id="position" name="position" class="careers-form__input"
-                                               value="<?= htmlspecialchars($_POST['position'] ?? '') ?>"
-                                               placeholder="Ex: Vendedor, Mecânico, Administrativo">
+                                            value="<?= htmlspecialchars($_POST['position'] ?? '') ?>"
+                                            placeholder="Ex: Vendedor, Mecânico, Administrativo">
                                     </div>
                                 </div>
-                                
+
                                 <div class="careers-form__group">
                                     <label for="curriculum" class="careers-form__label">Currículo (PDF) <span class="careers-form__required">*</span></label>
                                     <div class="careers-form__file-input">
@@ -121,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['curriculum'])) {
                                     </div>
                                     <p class="careers-form__file-help">Somente arquivos PDF são aceitos. Tamanho máximo: 5MB</p>
                                 </div>
-                                
+
                                 <div class="careers-form__actions">
                                     <button type="submit" class="careers-form__button">
                                         <i class="fas fa-paper-plane"></i>
@@ -135,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['curriculum'])) {
                         <div class="careers-info__card">
                             <h3 class="careers-info__title">Informações Adicionais</h3>
                             <p class="careers-info__text">Entre em contato diretamente com nosso departamento de RH para mais informações sobre oportunidades de carreira.</p>
-                            
+
                             <div class="careers-info__items">
                                 <div class="careers-info__item">
                                     <div class="careers-info__icon">
@@ -146,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['curriculum'])) {
                                         <p class="careers-info__item-text">rh@rodofreios.com.br</p>
                                     </div>
                                 </div>
-                                
+
                                 <div class="careers-info__item">
                                     <div class="careers-info__icon">
                                         <i class="fas fa-phone-alt"></i>
@@ -156,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['curriculum'])) {
                                         <p class="careers-info__item-text">(44) 3027-7373 (Ramal 123)</p>
                                     </div>
                                 </div>
-                                
+
                                 <div class="careers-info__item">
                                     <div class="careers-info__icon">
                                         <i class="fas fa-clock"></i>
@@ -166,7 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['curriculum'])) {
                                         <p class="careers-info__item-text">Segunda a Sexta: 8:00 - 18:00</p>
                                     </div>
                                 </div>
-                                
+
                                 <div class="careers-info__item">
                                     <div class="careers-info__icon">
                                         <i class="fas fa-map-marker-alt"></i>
@@ -177,12 +177,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['curriculum'])) {
                                     </div>
                                 </div>
                             </div>
-    
+
                         </div>
                     </div>
                 </div>
             </section>
 
+            <!----------------------Units Section---------------------->
             <section class="units-section">
                 <div class="section-header">
                     <h2 class="section-header__title">Nossas Unidades</h2>
@@ -193,11 +194,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['curriculum'])) {
                     <div class="units-tabs__container">
                         <!-- Sidebar com as abas laterais -->
                         <div class="units-tabs__sidebar">
-                            <button class="units-tabs__button units-tabs__button--active" data-target="loja01">Maringá - PR (Matriz)</button>
-                            <button class="units-tabs__button" data-target="loja02">Maringá - PR</button>
+                            <button class="units-tabs__button units-tabs__button--active" data-target="loja01">Maringá - PR (1)</button>
+                            <button class="units-tabs__button" data-target="loja02">Maringá - PR (2)</button>
                             <button class="units-tabs__button" data-target="loja03">Londrina - PR</button>
-                            <button class="units-tabs__button" data-target="loja04">(1) Luís Eduardo - BA</button>
-                            <button class="units-tabs__button" data-target="loja08">(2) Luís Eduardo - BA</button>
+                            <button class="units-tabs__button" data-target="loja04">Luís Eduardo Magalhães - BA (1) </button>
+                            <button class="units-tabs__button" data-target="loja08">Luís Eduardo Magalhães - BA (2) </button>
                             <button class="units-tabs__button" data-target="loja11">Barreiras - BA</button>
                             <button class="units-tabs__button" data-target="loja09">Dourados - MS</button>
                             <button class="units-tabs__button" data-target="loja06">Rondonópolis - MT</button>
@@ -221,7 +222,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['curriculum'])) {
                                     </iframe>
                                 </div>
                                 <div class="unit-info">
-                                    <h3 class="unit-info__title">LOJA 01 - Matriz Maringá</h3>
+                                    <h3 class="unit-info__title">LOJA 01 - (Matriz) Maringá</h3>
                                     <div class="unit-info__details">
                                         <div class="unit-info__item">
                                             <i class="fas fa-map-marker-alt"></i>
@@ -532,6 +533,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['curriculum'])) {
                     </div>
                 </div>
             </section>
+            
         </div>
     </div>
 </div>
@@ -541,7 +543,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['curriculum'])) {
         // File input styling
         const fileInput = document.getElementById('curriculum');
         const fileNameDisplay = document.querySelector('.careers-form__file-name');
-        
+
         if (fileInput && fileNameDisplay) {
             fileInput.addEventListener('change', function() {
                 if (this.files.length > 0) {
@@ -551,7 +553,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['curriculum'])) {
                 }
             });
         }
-        
+
         const tabButtons = document.querySelectorAll('.units-tabs__button');
         const tabPanes = document.querySelectorAll('.units-tabs__pane');
 
