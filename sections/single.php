@@ -31,6 +31,20 @@ try {
     }
 
     $availability = isset($product['availability']) ? $product['availability'] == 1 : true;
+    
+    // Get additional images for the product
+    $additional_images = [];
+    try {
+        $images_query = "SELECT * FROM product_images 
+                         WHERE product_id = :product_id 
+                         ORDER BY display_order ASC";
+        $images_stmt = $pdo->prepare($images_query);
+        $images_stmt->execute(['product_id' => $product['id']]);
+        $additional_images = $images_stmt->fetchAll();
+    } catch (PDOException $e) {
+        error_log($e->getMessage());
+        // Continue execution even if additional images fail to load
+    }
 } catch (PDOException $e) {
     error_log($e->getMessage());
     include __DIR__ . '/404.php';
@@ -96,6 +110,7 @@ if (!empty($product['category_id'])) {
                 data-manufacturer-code="<?= htmlspecialchars($product['manufacturer_code'] ?? '') ?>">
 
                 <div class="product-gallery">
+                    <!-- Main product image -->
                     <div class="product-main-image">
                         <?php if (!empty($product['main_picture'])): ?>
                             <img src="<?= UPLOADS_URL . $product['main_picture'] ?>"
@@ -105,6 +120,27 @@ if (!empty($product['category_id'])) {
                                 alt="<?= htmlspecialchars($product['title']) ?>" id="main-product-image">
                         <?php endif; ?>
                     </div>
+                    
+                    <!-- Thumbnails gallery -->
+                    <?php if (!empty($product['main_picture']) || !empty($additional_images)): ?>
+                        <div class="product-thumbnails">
+                            <!-- Main image as first thumbnail -->
+                            <?php if (!empty($product['main_picture'])): ?>
+                                <div class="thumbnail active" data-src="<?= UPLOADS_URL . $product['main_picture'] ?>">
+                                    <img src="<?= UPLOADS_URL . $product['main_picture'] ?>" 
+                                         alt="<?= htmlspecialchars($product['title']) ?> - Imagem principal">
+                                </div>
+                            <?php endif; ?>
+                            
+                            <!-- Additional images as thumbnails -->
+                            <?php foreach ($additional_images as $index => $image): ?>
+                                <div class="thumbnail" data-src="<?= UPLOADS_URL . $image['image_path'] ?>">
+                                    <img src="<?= UPLOADS_URL . $image['image_path'] ?>" 
+                                         alt="<?= htmlspecialchars($product['title']) ?> - Imagem <?= $index + 1 ?>">
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
 
                 <div class="product-details">
@@ -313,6 +349,39 @@ if (!empty($product['category_id'])) {
 
 .product-main-image:hover img {
     transform: scale(1.05);
+}
+
+/* Thumbnail gallery */
+.product-thumbnails {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.thumbnail {
+    width: 80px;
+    height: 80px;
+    border: 2px solid #eee;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 2px;
+}
+
+.thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.thumbnail:hover {
+    border-color: #ddd;
+}
+
+.thumbnail.active {
+    border-color: var(--primary-color);
 }
 
 /* Product Details */
@@ -615,6 +684,10 @@ if (!empty($product['category_id'])) {
         height: 350px;
     }
     
+    .product-thumbnails {
+        justify-content: center;
+    }
+    
     .product-actions {
         flex-direction: column;
     }
@@ -637,6 +710,11 @@ if (!empty($product['category_id'])) {
     .whatsapp-button {
         padding: 12px 15px;
     }
+    
+    .thumbnail {
+        width: 60px;
+        height: 60px;
+    }
 }
 
 @media (max-width: 576px) {
@@ -657,11 +735,35 @@ if (!empty($product['category_id'])) {
         align-items: flex-start;
         gap: 10px;
     }
+    
+    .thumbnail {
+        width: 50px;
+        height: 50px;
+    }
 }
 </style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Image gallery functionality
+        const mainImage = document.getElementById('main-product-image');
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        
+        // Set up thumbnail click handlers
+        if (thumbnails.length > 0 && mainImage) {
+            thumbnails.forEach(thumbnail => {
+                thumbnail.addEventListener('click', function() {
+                    // Update main image
+                    const imgSrc = this.getAttribute('data-src');
+                    mainImage.src = imgSrc;
+                    
+                    // Update active state
+                    thumbnails.forEach(thumb => thumb.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        }
+        
         // Track product view
         const productContainer = document.querySelector('.product-container');
         if (productContainer && productContainer.dataset.productId) {
