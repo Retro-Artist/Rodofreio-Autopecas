@@ -83,7 +83,7 @@
                         </li>
                         <li>
                             <i class="fas fa-phone-alt"></i>
-                            <span>(44) 3027-7373 | (44) 3224-8383</span>
+                            <span> Whatsapp: <?= WHATSAPP_NUMBER ?> | Matriz: (44) 3224-8383</span>
                         </li>
                         <li>
                             <i class="fas fa-envelope"></i>

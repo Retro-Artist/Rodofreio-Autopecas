@@ -4,7 +4,7 @@
 
 // Query to fetch featured and recent products
 $featured_query = "SELECT p.id, p.title, p.slug, p.main_picture, p.description, 
-                         p.featured, p.category_id, p.availability, 
+                         p.featured, p.category_id, p.availability, p.manufacturer_code,
                          c.name as category_name, c.slug as category_slug
                    FROM posts p
                    LEFT JOIN categories c ON p.category_id = c.id 
@@ -110,7 +110,8 @@ try {
                             data-product-id="<?= $product['id'] ?>"
                             data-product-name="<?= htmlspecialchars($product['title']) ?>"
                             data-product-image="<?= !empty($product['main_picture']) ? UPLOADS_URL . $product['main_picture'] : IMAGES_URL . 'placeholder.webp' ?>"
-                            data-product-slug="<?= $product['slug'] ?>">
+                            data-product-slug="<?= $product['slug'] ?>"
+                            data-manufacturer-code="<?= htmlspecialchars($product['manufacturer_code'] ?? '') ?>">
 
                             <!-- Full card clickable link -->
                             <a href="<?= $url ?>" class="product-card-link" aria-label="Ver detalhes de <?= htmlspecialchars($product['title']) ?>"></a>

@@ -72,7 +72,7 @@ $total_pages = ceil($total_items / $per_page);
 
 // Main query to get products for current page
 $query = "SELECT p.id, p.title, p.slug, p.main_picture, p.description, 
-                 p.featured, p.created_at, p.availability, p.tags,
+                 p.featured, p.created_at, p.availability, p.tags, p.manufacturer_code,
                  c.name as category_name, c.slug as category_slug
           FROM posts p
           LEFT JOIN categories c ON p.category_id = c.id
@@ -229,7 +229,8 @@ $products = $stmt->fetchAll();
                                 data-product-id="<?= $product['id'] ?>"
                                 data-product-name="<?= htmlspecialchars($product['title']) ?>"
                                 data-product-image="<?= !empty($product['main_picture']) ? UPLOADS_URL . $product['main_picture'] : IMAGES_URL . 'placeholder.webp' ?>"
-                                data-product-slug="<?= $product['slug'] ?>">
+                                data-product-slug="<?= $product['slug'] ?>"
+                                data-manufacturer-code="<?= htmlspecialchars($product['manufacturer_code'] ?? '') ?>">
 
                                 <a href="<?= $url ?>" class="product-card-link" aria-label="Ver detalhes de <?= htmlspecialchars($product['title']) ?>"></a>
 
