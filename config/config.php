@@ -12,7 +12,7 @@ define('WHATSAPP_NUMBER', '557799909400');
 // ===================================
 // Database Configuration
 // ===================================
-if (MODE === 'Development') {
+if (MODE === 'Production') {
     define('BASE_URL', 'http://localhost:8888');
     define('DB_HOST', 'localhost');
     define('DB_NAME', 'rodofreios');
