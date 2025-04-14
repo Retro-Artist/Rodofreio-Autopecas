@@ -169,30 +169,17 @@
 }
 
 /* WhatsApp badge */
-.whatsapp-badge {
+.status-badge {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    background-color: #e1f7ea;
-    color: #25D366;
     padding: 4px 8px;
     border-radius: 20px;
     font-size: 12px;
 }
 
-.whatsapp-badge i {
+.status-badge i {
     font-size: 14px;
-}
-
-/* Status badges */
-.status-badge {
-    display: inline-block;
-    padding: 3px 8px;
-    border-radius: 20px;
-    font-size: 11px;
-    margin-right: 5px;
-    background-color: #e9ecef;
-    color: #495057;
 }
 
 .status-published {
@@ -245,6 +232,11 @@
     color: #17a2b8;
 }
 
+.view-action-locked {
+    background-color: #ffebee;
+    color: #dc3545;
+}
+
 .delete-action {
     background-color: #ffebee;
     color: #dc3545;
@@ -252,14 +244,22 @@
 
 .edit-action:hover {
     background-color: #cce5ff;
+    color: #003366;
 }
 
 .view-action:hover {
     background-color: #d6f0ff;
+    color: #006c7d;
+}
+
+.view-action-locked:hover {
+    background-color: #ffe0e0;
+    color: #88000e;
 }
 
 .delete-action:hover {
-    background-color: #ffe0e3;
+    background-color: #ffe0e0;
+    color: #88000e;
 }
 
 /* Pagination */
@@ -343,6 +343,55 @@
 .action-button:hover {
     background-color: var(--primary-hover);
     color: white;
+}
+
+.missing-thumbnail {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8d7da;
+    border-radius: 4px;
+    position: relative;
+}
+
+.missing-thumbnail i {
+    font-size: 24px;
+    color: #dc3545;
+}
+
+.missing-tooltip {
+    position: absolute;
+    background-color: #343a40;
+    color: white;
+    padding: 5px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    pointer-events: none;
+}
+
+.missing-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #343a40 transparent transparent transparent;
+}
+
+.missing-thumbnail:hover .missing-tooltip {
+    opacity: 1;
+    visibility: visible;
 }
 
 /* Responsive adjustments */

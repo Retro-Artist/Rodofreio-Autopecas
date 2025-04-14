@@ -14,7 +14,7 @@ if (strpos($requestUri, '/admin') === 0) {
 
 // Basic routing
 $page = $_GET['page'] ?? 'home';
-$validPages = ['home', 'about', 'contact', 'archive', 'single', 'work'];
+$validPages = ['home', 'about', 'contact', 'archive', 'single', 'work', 'failed'];
 
 if (!in_array($page, $validPages)) {
     header("HTTP/1.0 404 Not Found");

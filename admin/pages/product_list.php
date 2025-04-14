@@ -176,7 +176,6 @@ try {
             <div class="empty-state">
                 <i class="fas fa-box-open"></i>
                 <p>Nenhum produto encontrado com os filtros atuais</p>
-                <a href="index.php?page=product_create" class="action-button">Adicionar Primeiro Produto</a>
             </div>
         <?php else: ?>
             <div class="table-responsive">
@@ -188,7 +187,6 @@ try {
                             <th>Código Original</th>
                             <th>Código Fabricante</th>
                             <th>Categoria</th>
-                            <th>WhatsApp</th>
                             <th>Status</th>
                             <th width="120">Ações</th>
                         </tr>
@@ -198,8 +196,19 @@ try {
                             <tr>
                                 <td class="product-image-cell">
                                     <?php if (!empty($product['main_picture'])): ?>
-                                        <img src="<?= BASE_URL ?>/uploads/<?= htmlspecialchars($product['main_picture']) ?>"
-                                            alt="<?= htmlspecialchars($product['title']) ?>" class="product-thumbnail">
+                                        <?php
+                                        $image_path = __DIR__ . '/../../uploads/' . $product['main_picture'];
+                                        $image_exists = file_exists($image_path);
+                                        ?>
+                                        <?php if ($image_exists): ?>
+                                            <img src="<?= BASE_URL ?>/uploads/<?= htmlspecialchars($product['main_picture']) ?>"
+                                                alt="<?= htmlspecialchars($product['title']) ?>" class="product-thumbnail">
+                                        <?php else: ?>
+                                            <div class="missing-thumbnail">
+                                                <i class="fas fa-exclamation-circle"></i>
+                                                <span class="missing-tooltip">Imagem não encontrada</span>
+                                            </div>
+                                        <?php endif; ?>
                                     <?php else: ?>
                                         <div class="no-thumbnail"><i class="fas fa-image"></i></div>
                                     <?php endif; ?>
@@ -224,15 +233,10 @@ try {
                                     <?php endif; ?>
                                 </td>
                                 <td>
-                                    <span class="whatsapp-badge">
-                                     Ativo
-                                    </span>
-                                </td>
-                                <td>
                                     <?php if ($product['status'] === 'published'): ?>
                                         <span class="status-badge status-published">Publicado</span>
                                     <?php else: ?>
-                                        <span class="status-badge status-draft">Rascunho</span>
+                                        <span class="status-badge status-unavailable">Rascunho</span>
                                     <?php endif; ?>
 
                                     <?php if (!$product['availability']): ?>
@@ -248,9 +252,15 @@ try {
                                         <a href="index.php?page=product_delete&id=<?= $product['id'] ?>" class="table-action delete-action" title="Excluir">
                                             <i class="fas fa-trash-alt"></i>
                                         </a>
-                                        <a href="<?= getProductUrl($product['slug']) ?>" class="table-action view-action" target="_blank" title="Visualizar no site">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
+                                        <?php if ($product['status'] === 'published'): ?>
+                                            <a href="<?= getProductUrl($product['slug']) ?>" class="table-action view-action" target="_blank" title="Visualizar no site">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        <?php else: ?>
+                                            <a href="<?= "/failed" ?>" class="table-action view-action-locked" target="_blank" title="Visualização Trancada">
+                                                <i class="fas fa-eye-slash"></i>
+                                            </a>
+                                        <?php endif; ?>
                                     </div>
                                 </td>
                             </tr>
