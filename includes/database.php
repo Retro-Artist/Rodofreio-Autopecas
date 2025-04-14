@@ -17,15 +17,6 @@ try {
         ]
     );
 
-    // Additional logging for debugging
-    $debug_log = ERROR_LOG . '_debug.log';
-    $debug_message = date('Y-m-d H:i:s') . " - Successful Database Connection\n";
-    $debug_message .= "Host: " . DB_HOST . "\n";
-    $debug_message .= "Database: " . DB_NAME . "\n";
-    $debug_message .= "User: " . DB_USER . "\n\n";
-    
-    error_log($debug_message, 3, $debug_log);
-
 } catch (PDOException $e) {
     // Detailed error logging
     $error_message = date('Y-m-d H:i:s') . " - Database Connection Error:\n";
