@@ -85,30 +85,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Para dar tempo para registrar os eventos antes de abrir o WhatsApp
                 setTimeout(() => {
-                    // Create WhatsApp message with cart items
+                    // Create WhatsApp message with cart items using the new format
                     const cartText = cart.map(item => {
                         // Format the item quantity with proper units
-                        const qtyText = `(${item.quantity} ${item.quantity === 1 ? 'Unidade' : 'Unidades'})`;
-                        
-                        // Get product URL
-                        const productUrl = `${baseUrl}/produto/${item.slug}`;
+                        const qtyText = `(${item.quantity}x)`;
                         
                         // Format the text with manufacturer code if available
-                        let itemText = `${item.name} ${qtyText}`;
+                        let itemText = '';
                         if (item.manufacturerCode) {
-                            itemText = `(Código Fabricante: ${item.manufacturerCode}) ${itemText}`;
+                            itemText = `*${item.manufacturerCode}* - ${item.name} ${qtyText}`;
+                        } else {
+                            itemText = `${item.name} ${qtyText}`;
                         }
-                        
-                        // Add product URL on a new line
-                        itemText += `\n${productUrl}`;
                         
                         return itemText;
                     }).join('\n- ');
 
                     const totalItems = getTotalItems();
-                    const itemText = totalItems === 1 ? 'item' : 'items';
+                    const itemText = totalItems === 1 ? 'item' : 'itens';
 
-                    const message = `Olá, tenho interesse no${cart.length > 1 ? 's' : ''} produto${cart.length > 1 ? 's' : ''}:\n- ${cartText}\n\nTotal: ${totalItems} ${itemText}`;
+                    const message = `Olá, gostaria de finalizar a compra dos seguintes produtos:\n\n- ${cartText}\n\nTotal: ${totalItems} ${itemText}`;
 
                     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
                 }, 300);

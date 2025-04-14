@@ -251,10 +251,15 @@ if (!empty($product['id'])) {
                             <i class="fas fa-shopping-cart"></i> Adicionar ao Carrinho
                         </button>
 
-                        <a href="<?= getWhatsAppUrl(WHATSAPP_NUMBER, 'Olá, tenho interesse no produto: ' .
-                                        (!empty($product['manufacturer_code']) ? '(Código Fabricante: ' . $product['manufacturer_code'] . ') ' : '') .
-                                        $product['title'] . ' (1 Unidade)' .
-                                        '\n' . BASE_URL . '/produto/' . $product['slug']) ?>"
+                        <?php
+                        // Prepare WhatsApp message with new template
+                        $manufacturerCodePrefix = !empty($product['manufacturer_code']) ? "*{$product['manufacturer_code']}* - " : "";
+                        $productName = htmlspecialchars($product['title']);
+                        $productUrl = BASE_URL . '/produto/' . $product['slug'];
+                        $whatsappMsg = "Olá, gostaria de finalizar a compra dos seguintes produtos:\n\n- {$manufacturerCodePrefix}{$productName} (1x)\n\nTotal: 1 item";
+                        ?>
+
+                        <a href="<?= getWhatsAppUrl(WHATSAPP_NUMBER, $whatsappMsg) ?>"
                             class="whatsapp-button" target="_blank" id="whatsapp-btn">
                             <i class="fab fa-whatsapp"></i> Compre agora pelo WhatsApp
                         </a>
@@ -391,7 +396,7 @@ if (!empty($product['id'])) {
                 updateWhatsAppLink();
             });
 
-            // Update WhatsApp link with current quantity
+            // Update WhatsApp link with current quantity using the new message format
             function updateWhatsAppLink() {
                 const quantity = parseInt(quantityInput.value);
                 const whatsappBtn = document.getElementById('whatsapp-btn');
@@ -408,14 +413,18 @@ if (!empty($product['id'])) {
                     const baseUrl = window.location.origin;
                     const productUrl = `${baseUrl}/produto/${productSlug}`;
 
-                    const qtyText = `(${quantity} ${quantity === 1 ? 'Unidade' : 'Unidades'})`;
-                    let messageText = `Olá, tenho interesse no produto: `;
-
+                    // Format with the new template
+                    let itemText = '';
                     if (manufacturerCode) {
-                        messageText += `(Código Fabricante: ${manufacturerCode}) `;
+                        itemText = `*${manufacturerCode}* - ${productName} (${quantity}x)`;
+                    } else {
+                        itemText = `${productName} (${quantity}x)`;
                     }
 
-                    messageText += `${productName} ${qtyText}\n${productUrl}`;
+                    const itemWord = quantity === 1 ? 'item' : 'itens';
+
+                    // Create the WhatsApp message using the new format
+                    let messageText = `Olá, gostaria de finalizar a compra dos seguintes produtos:\n\n- ${itemText}\n\nTotal: ${quantity} ${itemWord}`;
 
                     // Update the href attribute
                     whatsappBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(messageText)}`;
