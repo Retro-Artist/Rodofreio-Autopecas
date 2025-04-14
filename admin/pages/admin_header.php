@@ -22,6 +22,7 @@ $current_page = isset($_GET['page']) ? $_GET['page'] : 'home';
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/admin/home.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/admin/admin.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/admin/category.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/admin/settings.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/admin/product.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/admin/login.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/admin/forms.css">
