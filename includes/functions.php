@@ -132,7 +132,7 @@ function getArchiveUrl(array $params = []): string {
 
 
 /**
- * Creates a backup of the database
+ * Creates a backup of the database with a limit of 10 backups
  * 
  * @param string $filename Optional custom filename for the backup
  * @return array Array with success status and message
@@ -153,6 +153,16 @@ function backup_database($filename = null) {
                 'message' => "Não foi possível criar o diretório de backup"
             ];
         }
+    }
+    
+    // Check if we've reached the backup limit (10)
+    $existing_backups = glob($backup_dir . '/*.sql');
+    if (count($existing_backups) >= 10) {
+        return [
+            'success' => false,
+            'message' => "Limite de 10 backups atingido. Por favor, remova alguns backups antigos antes de criar novos.",
+            'limit_reached' => true
+        ];
     }
     
     $backup_path = $backup_dir . '/' . $filename;
@@ -343,6 +353,77 @@ function backup_database($filename = null) {
         return [
             'success' => false,
             'message' => "Falha ao criar backup do banco de dados: " . $e->getMessage()
+        ];
+    }
+}
+
+/**
+ * Get count of existing database backups
+ * 
+ * @return array Information about existing backups
+ */
+function get_backup_count() {
+    $backup_dir = __DIR__ . '/../backups';
+    
+    if (!is_dir($backup_dir)) {
+        return [
+            'count' => 0,
+            'max' => 10,
+            'remaining' => 10,
+            'percent' => 0
+        ];
+    }
+    
+    $existing_backups = glob($backup_dir . '/*.sql');
+    $count = count($existing_backups);
+    $max = 10;
+    $remaining = $max - $count;
+    $percent = ($count / $max) * 100;
+    
+    return [
+        'count' => $count,
+        'max' => $max,
+        'remaining' => $remaining,
+        'percent' => $percent
+    ];
+}
+
+/**
+ * Delete a specific backup file
+ * 
+ * @param string $filename The filename of the backup to delete
+ * @return array Status information about the deletion
+ */
+function delete_backup($filename) {
+    // Security check - only allow .sql files and no directory traversal
+    if (!preg_match('/^[a-zA-Z0-9_\-\.]+\.sql$/', $filename)) {
+        return [
+            'success' => false,
+            'message' => "Nome de arquivo inválido"
+        ];
+    }
+    
+    $backup_dir = __DIR__ . '/../backups';
+    $backup_path = $backup_dir . '/' . $filename;
+    
+    // Ensure the file exists and is within the backups directory
+    if (!file_exists($backup_path) || !is_file($backup_path)) {
+        return [
+            'success' => false,
+            'message' => "Arquivo de backup não encontrado"
+        ];
+    }
+    
+    // Delete the file
+    if (unlink($backup_path)) {
+        return [
+            'success' => true,
+            'message' => "Backup excluído com sucesso"
+        ];
+    } else {
+        return [
+            'success' => false,
+            'message' => "Não foi possível excluir o backup"
         ];
     }
 }

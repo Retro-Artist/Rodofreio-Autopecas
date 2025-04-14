@@ -33,20 +33,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Regenerate session ID for security
                 session_regenerate_id(true);
                 
-                // Create a backup when user logs in
-                $backup_result = backup_database();
-                if ($backup_result['success']) {
-                    // Optionally store backup info in session if needed
-                    $_SESSION['last_backup'] = [
-                        'time' => time(),
-                        'file' => basename($backup_result['file'])
-                    ];
-                    
-                    // Log successful backup after login
-                    error_log("Login backup created by user {$user['username']} (ID: {$user['id']})");
+                // Check backup count before creating a new one
+                $backup_info = get_backup_count();
+                
+                // Only create backup if we're under the limit
+                if ($backup_info['remaining'] > 0) {
+                    // Create a backup when user logs in
+                    $backup_result = backup_database();
+                    if ($backup_result['success']) {
+                        // Optionally store backup info in session if needed
+                        $_SESSION['last_backup'] = [
+                            'time' => time(),
+                            'file' => basename($backup_result['file'])
+                        ];
+                        
+                        // Log successful backup after login
+                        error_log("Login backup created by user {$user['username']} (ID: {$user['id']})");
+                    } else {
+                        // Just log the error but continue with login
+                        error_log("Failed to create login backup: {$backup_result['message']}");
+                    }
                 } else {
-                    // Just log the error but continue with login
-                    error_log("Failed to create login backup: {$backup_result['message']}");
+                    // Log that backup was skipped due to limit
+                    error_log("Login backup skipped: Backup limit reached ({$backup_info['count']}/{$backup_info['max']})");
                 }
                 
                 header("Location: ../index.php");
@@ -93,7 +102,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="form-group">
                     <label for="username">Usuário:</label>
                     <div class="input-with-icon">
-                        <i class="fas fa-user"></i>
                         <input type="text" id="username" name="username" 
                                required value="<?= htmlspecialchars($username ?? '') ?>" autocomplete="username">
                     </div>
@@ -101,7 +109,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="form-group">
                     <label for="password">Senha:</label>
                     <div class="input-with-icon">
-                        <i class="fas fa-lock"></i>
                         <input type="password" id="password" name="password" required autocomplete="current-password">
                     </div>
                 </div>

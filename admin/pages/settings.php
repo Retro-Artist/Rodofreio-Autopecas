@@ -22,6 +22,23 @@ $configContent = file_get_contents($configFilePath);
 $message = '';
 $messageClass = '';
 
+// Handle backup deletion
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_backup'])) {
+    $backup_file = $_POST['backup_file'] ?? '';
+    
+    if (!empty($backup_file)) {
+        $delete_result = delete_backup($backup_file);
+        
+        if ($delete_result['success']) {
+            $message = $delete_result['message'];
+            $messageClass = 'success';
+        } else {
+            $message = $delete_result['message'];
+            $messageClass = 'error';
+        }
+    }
+}
+
 // Handle manual backup
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_backup'])) {
     // Create a backup
@@ -121,7 +138,10 @@ foreach ($availableSettings as $key => $info) {
     }
 }
 
-// Get list of recent backups
+// Get backup information
+$backup_info = get_backup_count();
+
+// Get list of existing backups
 $backup_dir = __DIR__ . '/../../backups';
 $backups = [];
 
@@ -133,8 +153,13 @@ if (is_dir($backup_dir)) {
         return filemtime($b) - filemtime($a);
     });
     
-    // Get the 5 most recent backups
-    $backups = array_slice($backup_files, 0, 5);
+    foreach ($backup_files as $file) {
+        $backups[] = [
+            'filename' => basename($file),
+            'size' => filesize($file),
+            'date' => filemtime($file)
+        ];
+    }
 }
 ?>
 
@@ -190,11 +215,38 @@ if (is_dir($backup_dir)) {
                 <div class="backup-container">
                     <div class="backup-info">
                         <h3><i class="fas fa-database"></i> Backup do Banco de Dados</h3>
-                        <p>Crie um backup manual do banco de dados ou visualize os backups recentes.</p>
+                        <p>Crie um backup manual do banco de dados ou gerencie os backups existentes.</p>
+                        
+                        <!-- Backup Limit Status -->
+                        <div class="backup-limit-status">
+                            <h4>Status de Limite de Backups</h4>
+                            <div class="limit-meter-container">
+                                <div class="limit-meter">
+                                    <div class="limit-meter-bar" style="width: <?= $backup_info['percent'] ?>%"></div>
+                                </div>
+                                <div class="limit-meter-text">
+                                    <span class="current"><?= $backup_info['count'] ?></span> de <span class="max"><?= $backup_info['max'] ?></span> backups
+                                </div>
+                            </div>
+                            
+                            <?php if ($backup_info['remaining'] <= 2): ?>
+                                <div class="limit-warning">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    Você está se aproximando do limite de backups. Restam apenas <?= $backup_info['remaining'] ?> backups disponíveis.
+                                </div>
+                            <?php endif; ?>
+                            
+                            <?php if ($backup_info['remaining'] <= 0): ?>
+                                <div class="limit-error">
+                                    <i class="fas fa-times-circle"></i>
+                                    Você atingiu o limite máximo de 10 backups. Para criar novos backups, exclua alguns dos backups antigos.
+                                </div>
+                            <?php endif; ?>
+                        </div>
                         
                         <div class="backup-actions">
                             <form method="POST" class="backup-form">
-                                <button type="submit" name="create_backup" class="backup-button">
+                                <button type="submit" name="create_backup" class="backup-button" <?= $backup_info['remaining'] <= 0 ? 'disabled' : '' ?>>
                                     <i class="fas fa-download"></i> Criar Backup Manual
                                 </button>
                             </form>
@@ -202,7 +254,7 @@ if (is_dir($backup_dir)) {
                         
                         <?php if (!empty($backups)): ?>
                             <div class="recent-backups">
-                                <h4>Backups Recentes</h4>
+                                <h4>Backups Existentes</h4>
                                 <div class="backup-list">
                                     <table class="data-table">
                                         <thead>
@@ -210,14 +262,23 @@ if (is_dir($backup_dir)) {
                                                 <th>Nome do Arquivo</th>
                                                 <th>Data</th>
                                                 <th>Tamanho</th>
+                                                <th width="100">Ações</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php foreach ($backups as $backup): ?>
                                                 <tr>
-                                                    <td><?= htmlspecialchars(basename($backup)) ?></td>
-                                                    <td><?= date('d/m/Y H:i:s', filemtime($backup)) ?></td>
-                                                    <td><?= formatFileSize(filesize($backup)) ?></td>
+                                                    <td><?= htmlspecialchars($backup['filename']) ?></td>
+                                                    <td><?= date('d/m/Y H:i:s', $backup['date']) ?></td>
+                                                    <td><?= formatFileSize($backup['size']) ?></td>
+                                                    <td>
+                                                        <form method="POST" class="delete-backup-form" onsubmit="return confirm('Tem certeza que deseja excluir este backup?');">
+                                                            <input type="hidden" name="backup_file" value="<?= htmlspecialchars($backup['filename']) ?>">
+                                                            <button type="submit" name="delete_backup" class="delete-button">
+                                                                <i class="fas fa-trash-alt"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
                                                 </tr>
                                             <?php endforeach; ?>
                                         </tbody>
@@ -229,16 +290,6 @@ if (is_dir($backup_dir)) {
                                 <p>Nenhum backup encontrado. Crie seu primeiro backup clicando no botão acima.</p>
                             </div>
                         <?php endif; ?>
-                        
-                        <div class="backup-info-box">
-                            <h4>Informações sobre Backups</h4>
-                            <ul>
-                                <li><strong>Backup Manual:</strong> Cria um backup imediato do banco de dados.</li>
-                                <li><strong>Backup Automático de Login:</strong> Um backup é criado toda vez que um administrador faz login.</li>
-                                <li><strong>Backup Programado:</strong> Um backup automático é criado a cada 10 dias.</li>
-                                <li><strong>Localização dos Backups:</strong> Todos os backups são armazenados no diretório <code>/backups</code> do site.</li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>
