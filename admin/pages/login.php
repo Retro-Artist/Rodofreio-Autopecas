@@ -33,6 +33,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Regenerate session ID for security
                 session_regenerate_id(true);
                 
+                // Create a backup when user logs in
+                $backup_result = backup_database();
+                if ($backup_result['success']) {
+                    // Optionally store backup info in session if needed
+                    $_SESSION['last_backup'] = [
+                        'time' => time(),
+                        'file' => basename($backup_result['file'])
+                    ];
+                    
+                    // Log successful backup after login
+                    error_log("Login backup created by user {$user['username']} (ID: {$user['id']})");
+                } else {
+                    // Just log the error but continue with login
+                    error_log("Failed to create login backup: {$backup_result['message']}");
+                }
+                
                 header("Location: ../index.php");
                 exit();
             } else {

@@ -12,7 +12,7 @@ define('WHATSAPP_NUMBER', '557799909400');
 // ===================================
 // Database Configuration
 // ===================================
-if (MODE === 'Production') {
+if (MODE === 'Development') {
     define('BASE_URL', 'http://localhost:8888');
     define('DB_HOST', 'localhost');
     define('DB_NAME', 'rodofreios');
@@ -35,16 +35,16 @@ define('IMAGES_URL', BASE_URL . '/assets/img/');
 
 
 // ===================================
-// Error Handling & Logging
+// Error loging and Session
 // ===================================
-// Create log directory if it doesn't exist
+
 $log_directory = __DIR__ . '/../logs';
 if (!is_dir($log_directory)) {
     mkdir($log_directory, 0755, true);
 }
 define('ERROR_LOG', $log_directory . '/error.log');
 
-// Error Reporting (disable in production)
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);

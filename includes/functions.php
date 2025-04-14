@@ -129,3 +129,80 @@ function getArchiveUrl(array $params = []): string {
     
     return $base;
 }
+
+
+/**
+ * Creates a backup of the database
+ * 
+ * @param string $filename Optional custom filename for the backup
+ * @return array Array with success status and message
+ */
+function backup_database($filename = null) {
+    // Default filename with timestamp
+    if ($filename === null) {
+        $timestamp = date('Y-m-d_H-i-s');
+        $filename = "database-{$timestamp}-backup.sql";
+    }
+    
+    // Ensure backup directory exists
+    $backup_dir = __DIR__ . '/../backups';
+    if (!is_dir($backup_dir)) {
+        if (!mkdir($backup_dir, 0755, true)) {
+            return [
+                'success' => false,
+                'message' => "Não foi possível criar o diretório de backup"
+            ];
+        }
+    }
+    
+    $backup_path = $backup_dir . '/' . $filename;
+    
+    // Create backup command using mysqldump
+    $command = sprintf(
+        'mysqldump --user=%s --password=%s --host=%s %s > %s',
+        escapeshellarg(DB_USER),
+        escapeshellarg(DB_PASS),
+        escapeshellarg(DB_HOST),
+        escapeshellarg(DB_NAME),
+        escapeshellarg($backup_path)
+    );
+    
+    // Execute the command
+    exec($command, $output, $return_var);
+    
+    // Check if backup was successful
+    if ($return_var === 0) {
+        // Log successful backup
+        error_log("Database backup created successfully: $backup_path");
+        return [
+            'success' => true,
+            'message' => "Backup do banco de dados criado com sucesso",
+            'file' => $backup_path
+        ];
+    } else {
+        // Log error
+        error_log("Database backup failed with error code: $return_var");
+        return [
+            'success' => false,
+            'message' => "Falha ao criar backup do banco de dados. Código de erro: $return_var"
+        ];
+    }
+}
+
+/**
+ * Format file size in human-readable format
+ * 
+ * @param int $bytes File size in bytes
+ * @return string Formatted file size (e.g., "2.5 MB")
+ */
+function formatFileSize($bytes) {
+    $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+    
+    $bytes = max($bytes, 0);
+    $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+    $pow = min($pow, count($units) - 1);
+    
+    $bytes /= (1 << (10 * $pow));
+    
+    return round($bytes, 2) . ' ' . $units[$pow];
+}
